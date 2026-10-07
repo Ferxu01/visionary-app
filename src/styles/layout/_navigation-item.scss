@@ -1,0 +1,101 @@
+@use '../abstracts/variables' as *;
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: $space-md;
+  border-radius: $radius-md;
+  color: var(--nav-item-color, #9ca3af);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+  user-select: none;
+  cursor: pointer;
+
+  // Estados Interactivos (Hover / Focus)
+  &:hover {
+    background-color: var(--nav-item-hover-bg, rgba(255, 255, 255, 0.05));
+    color: var(--nav-item-hover-color, #ffffff);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color, #2563eb);
+    outline-offset: 2px;
+  }
+
+  // --- Modificadores de Estado (Activo) ---
+  &--active,
+  &--active-forced {
+    background-color: var(--nav-item-active-bg, rgba(37, 99, 235, 0.1));
+    color: var(--nav-item-active-color, #60a5fa);
+    font-weight: 600;
+
+    .nav-item__icon {
+      color: var(--nav-item-active-color, #60a5fa);
+    }
+  }
+
+  // Modificador opcional si requiere espacio extra por subtítulo
+  &--has-subtitle {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  // --- Elemento: Icono ---
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    color: currentColor;
+    transition: color 0.15s ease;
+  }
+
+  // --- Elemento: Contenedor de Texto ---
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0; // Previene desbordamiento en textos largos
+  }
+
+  // --- Elemento: Título ---
+  &__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.25rem;
+  }
+
+  // --- Elemento: Subtítulo ---
+  &__subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--nav-item-subtitle-color, #6b7280);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0.125rem;
+  }
+
+  // --- Elemento: Badge / Insignia ---
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 9999px;
+    background-color: var(--nav-item-badge-bg, #2563eb);
+    color: var(--nav-item-badge-color, #ffffff);
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,21 @@
+@use 'variables' as *;
+@use 'sass:map';
+
+@mixin respond-to($breakpoint) {
+  $value: map.get($breakpoints, $breakpoint);
+
+  @if $value {
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @warn "El breakpoint '#{$breakpoint}' no existe dentro del mapa $breakpoints.";
+  }
+}
+
+// Truncar textos largos con puntos suspensivos (...)
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

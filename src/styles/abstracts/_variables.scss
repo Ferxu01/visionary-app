@@ -1,0 +1,72 @@
+// ==========================================================================
+// 1. TIPOGRAFÍA (Escala Modular)
+// ==========================================================================
+$font-family-sans:
+  'Inter',
+  system-ui,
+  -apple-system,
+  sans-serif;
+$font-family-code:
+  'JetBrains Mono',
+  Fira Code,
+  monospace;
+
+// El navegador base suele ser 16px (1rem = 16px)
+$font-size-100: 0.75rem; // 12px  -> Textos legales, captions, badges
+$font-size-200: 0.875rem; // 14px  -> Textos secundarios, inputs, tablas
+$font-size-300: 1rem; // 16px  -> Cuerpo de texto principal (Body)
+$font-size-400: 1.25rem; // 20px  -> Subtítulos, títulos de tarjetas (Cards)
+$font-size-500: 1.5rem; // 24px  -> Títulos de sección pequeños
+$font-size-600: 2rem; // 32px  -> Títulos de página de nivel medio
+$font-size-700: 2.5rem; // 40px  -> Títulos grandes de bienvenida / Hero
+
+// Pesos visuales
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Alturas de línea (Line-height) para evitar solapamientos
+$line-height-tight: 1.2; // Para títulos grandes
+$line-height-base: 1.5; // Para el cuerpo de texto común
+$line-height-loose: 1.7; // Para lectura larga de blogs o artículos
+
+// ==========================================================================
+// 2. SISTEMA DE ESPACIADOS (Escala de 8px - Ideal para Apps)
+// ==========================================================================
+$space-xs: 0.25rem; // 4px  -> Separaciones mínimas (icono de texto)
+$space-sm: 0.5rem; // 8px  -> Paddings internos de botones pequeños
+$space-md: 1rem; // 16px -> Padding estándar de tarjetas, inputs, gaps
+$space-lg: 1.5rem; // 24px -> Márgenes entre bloques
+$space-xl: 2rem; // 32px -> Separación entre macrocomponentes
+$space-xxl: 3rem; // 48px -> Espaciados superiores de layouts
+
+// ==========================================================================
+// 3. BREAKPOINTS (Para aplicaciones Mobile-First)
+// ==========================================================================
+$breakpoints: (
+  'sm': 640px,
+  // Móviles en horizontal
+  'md': 768px,
+  // Tablets
+  'lg': 1024px,
+  // Laptops / Pantallas estándar
+  'xl': 1280px, // Desktops grandes
+);
+
+// ==========================================================================
+// 4. ELEVACIÓN Y EFECTOS (Sombras modernas tipo SaaS)
+// ==========================================================================
+$radius-sm: 4px;
+$radius-md: 8px; // El más común para tarjetas, botones e inputs
+$radius-lg: 16px; // Para modales o menús flotantes
+$radius-full: 9999px; // Para avatares o botones píldora
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md:
+  0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg:
+  0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);

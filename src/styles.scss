@@ -1,0 +1,13 @@
+// 1. Abstracts
+// @use 'styles/abstracts/variables' as *;
+
+// 2. Base (Estilos globales)
+@use 'styles/base/reset';
+
+// 3. Layouts (Macrocomponentes estructurales)
+@use 'styles/layout/layout';
+@use 'styles/layout/navigation';
+@use 'styles/layout/navigation-item';
+
+// 4. Components (Microcomponentes reutilizables)
+// @use 'components/button';

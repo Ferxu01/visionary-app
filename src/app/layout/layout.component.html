@@ -1,0 +1,140 @@
+<div class="layout" [class.layout--sidebar-hidden]="!showSidebar()">
+  <!-- Sidebar -->
+  <aside
+    class="layout__sidebar"
+    [class.layout__sidebar--collapsed]="!isScreenSmall() && !isDrawerOpen()"
+  >
+    <!-- Logo -->
+    <div class="layout__logo-container">
+      <img class="layout__logo" src="assets/images/logo/logo.svg" alt="Visionary Logo" />
+    </div>
+
+    <!-- User Profile -->
+    <div class="layout__user">
+      <div class="layout__avatar-wrapper">
+        @if (user()?.foto) {
+          <img class="layout__avatar" [src]="user()?.foto" alt="User Avatar" />
+        } @else {
+          <img class="layout__avatar" src="assets/images/logo/logo.svg" alt="Avatar" />
+          <!-- <app-icon name="user-circle" size="2xl" type="solid" /> -->
+        }
+      </div>
+
+      <div class="layout__user-details">
+        <span class="layout__user-name">{{ user()?.nombre }}</span>
+        <span class="layout__user-email">{{ user()?.correo }}</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="layout__nav">
+      <div class="vertical-nav">
+        <!-- Header opcional vía proyección de contenido -->
+        <div class="vertical-nav__header">
+          <ng-content select="[navigationHeader]" />
+        </div>
+
+        <!-- Lista de ítems de navegación -->
+        <ul class="vertical-nav__list">
+          @for (item of items; track item.id) {
+            <li class="vertical-nav__item">
+              <a class="nav-item" [routerLink]="[item.link]" routerLinkActive="nav-item--active">
+                @if (item.icon; as icon) {
+                  (Icono)
+                  <!-- <app-icon class="nav-item__icon" [name]="icon" size="md" type="outline" /> -->
+                }
+
+                <!-- Contenedor de Texto -->
+                <div class="nav-item__content">
+                  <span class="nav-item__title">
+                    {{ item.title }}
+                  </span>
+                </div>
+              </a>
+            </li>
+          }
+        </ul>
+
+        <!-- @if (logoutItem(); as logout) {
+          <div class="vertical-nav__footer">
+            <a
+              class="nav-item"
+              [class.nav-item--active-forced]="logout.active"
+              [class.nav-item--has-subtitle]="!!logout.subtitle"
+              [routerLink]="[logout.link]"
+              routerLinkActive="nav-item--active"
+            >
+              <app-icon class="nav-item__icon" [name]="icon" size="md" type="outline" /> 
+              @if (logout.icon; as icon) {
+                BBBBBBBBBBBB
+              }
+
+              <div class="nav-item__content">
+                <span class="nav-item__title">
+                  {{ logout.title }}
+                </span>
+
+                @if (logout.subtitle; as subtitle) {
+                  <span class="nav-item__subtitle">
+                    {{ subtitle }}
+                  </span>
+                }
+              </div>
+
+              @if (logout.badge; as badge) {
+                <span class="nav-item__badge">
+                  {{ badge.title }}
+                </span>
+              }
+            </a>
+          </div>
+        } -->
+      </div>
+
+      <!-- Panel lateral desplegable / Aside (si se utiliza) -->
+      <!-- @for (item of navigation(); track item.id) {
+        @if (activeAsideItemId() === item.id) {
+          <app-aside-panel class="vertical-nav__aside" [item]="item" (close)="closeAside()" />
+        }
+      } -->
+    </nav>
+  </aside>
+
+  <!-- Content Container -->
+  <div class="layout__content">
+    <!-- Header / Toolbar -->
+    @if (showSidebar()) {
+      <header class="layout__header">
+        <button
+          type="button"
+          class="layout__icon-button"
+          (click)="toggleDrawer()"
+          aria-label="Toggle navigation"
+        >
+          bars-3 (icon)
+          <!-- <app-icon name="bars-3" size="md" type="outline" /> -->
+        </button>
+
+        <div class="layout__actions">
+          <!-- <app-theme-mode />
+          <app-languages /> -->
+          <button
+            type="button"
+            class="layout__icon-button"
+            (click)="toggleFullscreen()"
+            aria-label="Toggle fullscreen"
+          >
+            fullscreen/fullscreen_exit (icon)
+            <!-- <app-icon [name]="isFullscreenMode() ? 'fullscreen_exit' : 'fullscreen'" size="md" /> -->
+          </button>
+        </div>
+      </header>
+    }
+
+    <!-- Main View -->
+    <main class="layout__main">
+      <router-outlet />
+      <!-- <app-notification /> -->
+    </main>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,6 +6,4 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   imports: [RouterOutlet],
 })
-export class App {
-  protected readonly title = signal('visionary-app');
-}
+export class App {}
