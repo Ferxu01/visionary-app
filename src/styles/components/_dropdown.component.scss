@@ -1,0 +1,118 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/keyframes' as *;
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+
+  // --- Trigger Button ---
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem; // 40px
+    height: 2.5rem; // 40px
+    padding: $space-sm;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: $radius-md;
+    color: var(--text-primary, #1f2937);
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--bg-button-hover, rgba(0, 0, 0, 0.05));
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--primary-color, #2563eb);
+      outline-offset: 2px;
+    }
+  }
+
+  // --- Menu Dropdown ---
+  &__menu {
+    position: absolute;
+    top: calc(100% + #{$space-xs});
+    right: 0;
+    min-width: 11rem; // 176px
+    padding: $space-xs 0;
+    background-color: var(--bg-dropdown, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    z-index: 50;
+    animation: fadeIn 0.15s ease-out;
+  }
+
+  &__header {
+    padding: $space-xs $space-md;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: $space-xs;
+  }
+
+  &__title {
+    font-size: $font-size-100; // 12px
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary, #64748b);
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: block;
+    width: 100%;
+  }
+
+  // --- Option Item ---
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: $space-sm; // 8px de separación entre icono y texto
+    width: 100%;
+    padding: $space-sm $space-md;
+    background: transparent;
+    border: none;
+    font-family: $font-family-sans;
+    font-size: $font-size-200; // 14px
+    color: var(--text-secondary, #64748b);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-hover, rgba(0, 0, 0, 0.05));
+      color: var(--text-primary, #0f172a);
+    }
+
+    // Estado seleccionado (sustituye a [class.ring-2])
+    &--active {
+      font-weight: $font-weight-medium;
+      color: var(--color-primary, #2563eb);
+      background-color: var(--bg-active, rgba(37, 99, 235, 0.08));
+
+      .theme__icon {
+        color: var(--color-primary, #2563eb);
+      }
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    line-height: $line-height-base;
+  }
+}

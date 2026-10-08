@@ -1,0 +1,33 @@
+<app-dropdown>
+  <ng-template #dropdownTrigger>
+    <span class="language__flag-wrapper">
+      <!-- /* [src]="getFlag(selectedLang())" */ -->
+      <img class="language__flag" [src]="currentFlag()" [alt]="`Bandera de ${selectedLang()}`" />
+    </span>
+  </ng-template>
+
+  <ng-template #dropdownContent>
+    <ul class="language__list" role="menu">
+      @for (lang of availableLangs(); track lang.id) {
+        <li class="language__item" role="none">
+          <button
+            type="button"
+            class="language__option"
+            [class.language__option--active]="lang.id === selectedLang()"
+            (click)="selectLang(lang.id)"
+            role="menuitem"
+          >
+            <span class="language__flag-wrapper">
+              <img
+                class="language__flag"
+                [src]="getFlag(lang.id)"
+                [alt]="`Bandera de ${lang.label}`"
+              />
+            </span>
+            <span class="language__label">{{ lang.label }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  </ng-template>
+</app-dropdown>

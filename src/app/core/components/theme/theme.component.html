@@ -1,0 +1,48 @@
+<app-dropdown>
+  <ng-template #dropdownTrigger>
+    <app-icon [name]="activeSchemeIcon()" />
+  </ng-template>
+
+  <ng-template #dropdownContent>
+    <ul class="theme__list" role="menu">
+      <li class="theme__item" role="none">
+        <button
+          type="button"
+          class="theme__option"
+          [class.theme__option--active]="isAutoTheme()"
+          (click)="setScheme('auto')"
+          role="menuitem"
+        >
+          <app-icon name="bolt" class="theme__icon" />
+          <span class="theme__label">{{ 'auto' | transloco }}</span>
+        </button>
+      </li>
+
+      <li class="theme__item" role="none">
+        <button
+          type="button"
+          class="theme__option"
+          [class.theme__option--active]="isDarkTheme()"
+          (click)="setScheme('dark')"
+          role="menuitem"
+        >
+          <app-icon name="moon" class="theme__icon" />
+          <span class="theme__label">{{ 'dark' | transloco }}</span>
+        </button>
+      </li>
+
+      <li class="theme__item" role="none">
+        <button
+          type="button"
+          class="theme__option"
+          [class.theme__option--active]="isLightTheme()"
+          (click)="setScheme('light')"
+          role="menuitem"
+        >
+          <app-icon name="sun" class="theme__icon" />
+          <span class="theme__label">{{ 'light' | transloco }}</span>
+        </button>
+      </li>
+    </ul>
+  </ng-template>
+</app-dropdown>

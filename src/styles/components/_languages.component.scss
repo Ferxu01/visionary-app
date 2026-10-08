@@ -1,0 +1,79 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/keyframes' as *;
+
+.language {
+  // --- Contenedor de la Bandera ---
+  &__flag-wrapper {
+    position: relative;
+    display: inline-flex;
+    width: 1.5rem; // 24px
+    height: 1rem; // 16px
+    border-radius: $radius-sm;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &__flag {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // --- Desplegable / Menú ---
+  &__list {
+    position: absolute;
+    top: calc(100% + #{$space-xs});
+    right: 0;
+    min-width: 10rem; // 160px
+    margin: 0;
+    padding: $space-xs;
+    list-style: none;
+    background-color: var(--bg-dropdown, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    z-index: 50;
+    animation: fadeIn 0.15s ease-out;
+  }
+
+  &__item {
+    display: block;
+    width: 100%;
+  }
+
+  // --- Opción del Menú ---
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: $space-sm; // 8px de separación entre bandera y texto
+    width: 100%;
+    padding: $space-sm $space-md;
+    background: transparent;
+    border: none;
+    border-radius: $radius-sm;
+    font-family: $font-family-sans;
+    font-size: $font-size-200; // 14px
+    color: var(--text-primary, #1f2937);
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-hover, rgba(0, 0, 0, 0.05));
+      color: var(--text-primary, #0f172a);
+    }
+
+    &--active {
+      font-weight: $font-weight-semibold;
+      background-color: var(--bg-active, rgba(37, 99, 235, 0.08));
+      color: var(--color-primary, #2563eb);
+    }
+  }
+
+  &__label {
+    line-height: $line-height-base;
+  }
+}

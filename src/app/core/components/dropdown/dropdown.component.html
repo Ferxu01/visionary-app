@@ -1,0 +1,18 @@
+<div class="dropdown">
+  <button
+    type="button"
+    class="dropdown__button"
+    (click)="toggle()"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="true"
+    aria-label="Seleccionar opción"
+  >
+    <ng-container *ngTemplateOutlet="triggerTemplate()"></ng-container>
+  </button>
+
+  @if (isOpen()) {
+    <div class="dropdown__content" tabindex="0" (click)="close()" (keydown)="close()">
+      <ng-container *ngTemplateOutlet="contentTemplate()"></ng-container>
+    </div>
+  }
+</div>

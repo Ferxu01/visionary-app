@@ -2,11 +2,13 @@ import { Component, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { IconComponent } from '../core/components/icon/icon.component';
+import { ThemeComponent } from '../core/components/theme/theme.component';
+import { LanguageComponent } from '../core/components/language/language.component';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  imports: [RouterOutlet, IconComponent, SidebarComponent],
+  imports: [RouterOutlet, IconComponent, SidebarComponent, LanguageComponent, ThemeComponent],
 })
 export class LayoutComponent {
   protected readonly isDrawerOpen = signal(true);
