@@ -1,0 +1,22 @@
+<nav class="nav">
+  <!-- Header opcional vía proyección de contenido -->
+  <div class="nav__header">
+    <ng-content select="[navigationHeader]" />
+  </div>
+
+  <ul class="nav__list">
+    @for (item of items; track item.id) {
+      <li class="nav__item">
+        <a class="nav__link" [routerLink]="[item.link]" routerLinkActive="nav__link--active">
+          <app-icon [name]="item.icon" />
+
+          <div class="nav__link-content">
+            <span class="nav__link-title">
+              {{ item.title }}
+            </span>
+          </div>
+        </a>
+      </li>
+    }
+  </ul>
+</nav>

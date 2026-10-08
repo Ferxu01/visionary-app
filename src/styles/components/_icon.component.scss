@@ -1,0 +1,22 @@
+// // img,
+// // svg {
+// .icon {
+//   width: 1.75rem; // 20px - Ancho adecuado de icono
+//   height: 1.75rem; // 20px - Alto adecuado
+//   object-fit: contain;
+//   pointer-events: none; // Evita problemas de click en el SVG/IMG
+// }
+
+.icon {
+  display: inline-flex; // inline-block
+  width: 1.75rem; // 28px
+  height: 1.75rem;
+  pointer-events: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}

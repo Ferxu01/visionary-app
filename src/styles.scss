@@ -8,6 +8,8 @@
 @use 'styles/layout/layout';
 @use 'styles/layout/navigation';
 @use 'styles/layout/navigation-item';
+@use 'styles/layout/sidebar';
 
 // 4. Components (Microcomponentes reutilizables)
+@use 'styles/components/icon.component';
 // @use 'components/button';

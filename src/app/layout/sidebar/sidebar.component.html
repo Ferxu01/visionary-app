@@ -1,0 +1,26 @@
+<aside class="sidebar" [class.sidebar--collapsed]="!isScreenSmall() && !isDrawerOpen()">
+  <!-- Logo -->
+  <div class="sidebar__logo-container">
+    <img class="sidebar__logo" src="assets/images/logo/logo.svg" alt="Visionary Logo" />
+  </div>
+
+  <!-- User Profile -->
+  <div class="sidebar__user">
+    <div class="sidebar__avatar-wrapper">
+      @if (user()?.foto) {
+        <img class="sidebar__avatar" [src]="user()?.foto" alt="User Avatar" />
+      } @else {
+        <app-icon name="user" />
+        <!-- <img class="layout__avatar" src="assets/images/logo/logo.svg" alt="Avatar" /> -->
+      }
+    </div>
+
+    <div class="sidebar__user-details">
+      <span class="sidebar__user-name">{{ user()?.nombre }}</span>
+      <span class="sidebar__user-email">{{ user()?.correo }}</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <app-navigation />
+</aside>
