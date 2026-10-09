@@ -5,6 +5,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import gsap from 'gsap';
 
 @Injectable({ providedIn: 'root' })
 export class EngineService implements OnDestroy {
@@ -16,6 +17,14 @@ export class EngineService implements OnDestroy {
   private outlinePass!: OutlinePass;
   private animFrameId!: number;
   private currentModel: THREE.Object3D | null = null;
+
+  // Mapas para almacenar transformaciones iniciales
+  private initialPositions = new Map<THREE.Object3D, THREE.Vector3>();
+  private initialRotations = new Map<THREE.Object3D, THREE.Euler>();
+  private initialCameraPos = new THREE.Vector3();
+  private initialTargetPos = new THREE.Vector3();
+
+  private isExploded = false;
 
   init(canvas: HTMLCanvasElement): void {
     this.scene = new THREE.Scene();
@@ -91,6 +100,8 @@ export class EngineService implements OnDestroy {
         this.camera.lookAt(center);
         this.controls.update();
 
+        this.saveInitialState(center);
+
         if (onLoadCallback) {
           onLoadCallback(this.currentModel);
         }
@@ -105,6 +116,125 @@ export class EngineService implements OnDestroy {
         console.error('Error al cargar el modelo 3D:', error);
       },
     );
+  }
+
+  private saveInitialState(targetCenter: THREE.Vector3): void {
+    this.initialPositions.clear();
+    this.initialRotations.clear();
+
+    if (this.currentModel) {
+      this.currentModel.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          this.initialPositions.set(child, child.position.clone());
+          this.initialRotations.set(child, child.rotation.clone());
+        }
+      });
+    }
+
+    this.initialCameraPos.copy(this.camera.position);
+    this.initialTargetPos.copy(targetCenter);
+    this.isExploded = false;
+  }
+
+  /**
+   * Restablece el modelo y la cámara a su posición y rotación iniciales.
+   */
+  resetModel(): void {
+    if (!this.currentModel) return;
+
+    // 1. Restaurar posición y rotación de las partes
+    this.currentModel.traverse((child) => {
+      if (child instanceof THREE.Mesh && this.initialPositions.has(child)) {
+        const origPos = this.initialPositions.get(child)!;
+        const origRot = this.initialRotations.get(child)!;
+
+        gsap.to(child.position, {
+          x: origPos.x,
+          y: origPos.y,
+          z: origPos.z,
+          duration: 1,
+          ease: 'power2.out',
+        });
+
+        gsap.to(child.rotation, {
+          x: origRot.x,
+          y: origRot.y,
+          z: origRot.z,
+          duration: 1,
+          ease: 'power2.out',
+        });
+      }
+    });
+
+    // 2. Restaurar Cámara y OrbitControls
+    gsap.to(this.camera.position, {
+      x: this.initialCameraPos.x,
+      y: this.initialCameraPos.y,
+      z: this.initialCameraPos.z,
+      duration: 1,
+      ease: 'power2.out',
+    });
+
+    gsap.to(this.controls.target, {
+      x: this.initialTargetPos.x,
+      y: this.initialTargetPos.y,
+      z: this.initialTargetPos.z,
+      duration: 1,
+      ease: 'power2.out',
+      onUpdate: () => this.controls.update(),
+    });
+
+    this.isExploded = false;
+  }
+
+  /**
+   * Alterna entre el modelo ensamblado y desglosado (explotado).
+   */
+  toggleExplosion(): boolean {
+    if (!this.currentModel) return false;
+
+    const center = new THREE.Vector3();
+    let count = 0;
+
+    this.currentModel.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        center.add(child.position);
+        count++;
+      }
+    });
+
+    if (count > 0) center.divideScalar(count);
+
+    this.currentModel.traverse((child) => {
+      if (child instanceof THREE.Mesh && this.initialPositions.has(child)) {
+        const initialPos = this.initialPositions.get(child)!;
+        const direction = initialPos.clone().sub(center).normalize();
+
+        // Determinar distancias relativas por nombre de capa
+        let explosionDistance = 1.0;
+        const name = child.name.toLowerCase();
+
+        if (name.includes('cornea')) explosionDistance = 2.0;
+        else if (name.includes('iris')) explosionDistance = 1.4;
+        else if (name.includes('pupila')) explosionDistance = 0.8;
+        else if (name.includes('cristalino')) explosionDistance = 0.4;
+
+        const targetPosition = this.isExploded
+          ? initialPos.clone()
+          : initialPos.clone().add(direction.multiplyScalar(explosionDistance));
+
+        gsap.to(child.position, {
+          x: targetPosition.x,
+          y: targetPosition.y,
+          z: targetPosition.z,
+          duration: 1.2,
+          ease: 'power2.out',
+        });
+      }
+    });
+
+    this.isExploded = !this.isExploded;
+    return this.isExploded;
   }
 
   private setupPostProcessing(width: number, height: number): void {

@@ -18,6 +18,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwitchEngineComponent } from '../../core/components/switch-engine/switch-engine.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 
+type ModelKey = 'Sin Corte' | 'Sagital' | 'Frontal';
+type BaseRoute = 'assets/models/';
+type ModelRoute =
+  `${BaseRoute}ojo.glb` | `${BaseRoute}ojo_interno.glb` | `${BaseRoute}retinografia.glb`;
+
 @Component({
   selector: 'app-3d-model',
   templateUrl: './model-3d.component.html',
@@ -244,8 +249,14 @@ export class Model3dComponent implements AfterViewInit {
 
   // Selector de vista de modelo
   protected readonly isMenuOpen = signal(false);
-  protected readonly selectedOption = signal('Sin Corte');
-  protected readonly options = signal<string[]>(['Sin Corte', 'Sagital', 'Frontal']);
+  protected readonly selectedOption = signal<ModelKey>('Sin Corte');
+  protected readonly options = signal<ModelKey[]>(['Sin Corte', 'Sagital', 'Frontal']);
+
+  private readonly modelPaths: Record<ModelKey, ModelRoute> = {
+    'Sin Corte': 'assets/models/ojo.glb',
+    Sagital: 'assets/models/ojo_interno.glb',
+    Frontal: 'assets/models/retinografia.glb',
+  };
 
   ngAfterViewInit(): void {
     // 1. Inicializar Engine
@@ -253,7 +264,7 @@ export class Model3dComponent implements AfterViewInit {
     this.selectionService.setOutlinePass(this.engineService.getOutlinePass());
 
     // 2. Cargar el modelo 3D
-    this.engineService.loadModel('assets/models/ojo.glb');
+    this.engineService.loadModel(this.modelPaths['Sin Corte']);
 
     // 3. Registrar Atajos con Comandos (Desacoplado)
     this.inputManager.registerKeyBinding(
@@ -315,13 +326,15 @@ export class Model3dComponent implements AfterViewInit {
   }
 
   protected resetModelPosition(): void {
-    // Lógica de reseteo enviada al EngineService
     this.selectionService.clearSelection();
+    this.engineService.resetModel();
     this.isDivided.set(false);
   }
 
   protected toggleExplosion(): void {
-    this.isDivided.update((v) => !v);
+    // this.isDivided.update((v) => !v);
+    const newState = this.engineService.toggleExplosion();
+    this.isDivided.set(newState);
   }
 
   // protected switchEngine(motor: 'Threejs' | 'Webgl'): void {
@@ -332,8 +345,14 @@ export class Model3dComponent implements AfterViewInit {
     this.isMenuOpen.update((v) => !v);
   }
 
-  protected selectOption(option: string): void {
+  protected selectOption(option: ModelKey): void {
     this.selectedOption.set(option);
     this.isMenuOpen.set(false);
+
+    // Cargar el modelo GLTF correspondiente a la opción seleccionada
+    const path = this.modelPaths[option] || this.modelPaths['Sin Corte'];
+    this.selectionService.clearSelection();
+    this.isDivided.set(false);
+    this.engineService.loadModel(path);
   }
 }
