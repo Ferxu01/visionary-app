@@ -1,0 +1,220 @@
+.info-modal {
+  position: fixed;
+  top: 90px;
+  left: 40px;
+  width: 340px;
+  max-height: 70vh;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  /* Glassmorphism */
+  background: rgba(18, 14, 33, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(147, 51, 234, 0.25);
+  color: #ffffff;
+  user-select: none;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 4px 16px;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &__drag-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 auto;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__icon-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+    }
+
+    &--close:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+  }
+
+  &__btn-svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__nav {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__tab-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    &--active {
+      background: #9333ea;
+      border-color: #a855f7;
+      box-shadow: 0 0 12px rgba(147, 51, 234, 0.6);
+    }
+  }
+
+  &__tab-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+
+  &__font-controls {
+    display: flex;
+    gap: 4px;
+  }
+
+  &__font-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  &__body {
+    padding: 16px;
+    overflow-y: auto;
+    flex-grow: 1;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(147, 51, 234, 0.5);
+      border-radius: 10px;
+    }
+  }
+
+  &__title {
+    font-size: 1.15em;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #e9d5ff;
+  }
+
+  &__content {
+    line-height: 1.5;
+
+    &--text {
+      text-align: justify;
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  &__pathology-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  &__pathology-title {
+    color: #c084fc;
+    font-size: 0.95em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  &__pathology-desc {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &__gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  &__gallery-item {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 90px;
+  }
+
+  &__gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__empty-state {
+    text-align: center;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 16px 0;
+  }
+}

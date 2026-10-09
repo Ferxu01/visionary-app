@@ -1,0 +1,137 @@
+@if (visible() && currentPartInfo(); as info) {
+  <div
+    cdkDrag
+    cdkDragBoundary=".canvas-container"
+    class="info-modal"
+    [style.font-size.px]="fontSize()"
+  >
+    <!-- Cabecera / Arrastre -->
+    <header class="info-modal__header" cdkDragHandle>
+      <div class="info-modal__drag-handle"></div>
+      <div class="info-modal__actions">
+        <button
+          type="button"
+          class="info-modal__icon-btn"
+          (click)="downloadInfo()"
+          [title]="'Pages.3dModel.infoModal.downloadInfo' | transloco"
+        >
+          <svg
+            class="info-modal__btn-svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="info-modal__icon-btn info-modal__icon-btn--close"
+          (click)="closeModal()"
+          title="Cerrar"
+        >
+          <svg
+            class="info-modal__btn-svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="info-modal__toolbar">
+      <nav class="info-modal__nav">
+        <button
+          type="button"
+          class="info-modal__tab-btn"
+          [class.info-modal__tab-btn--active]="activeTab() === 'info'"
+          (click)="setTab('info')"
+        >
+          <img class="info-modal__tab-icon" src="assets/images/modal/info.png" alt="Info" />
+        </button>
+
+        <button
+          type="button"
+          class="info-modal__tab-btn"
+          [class.info-modal__tab-btn--active]="activeTab() === 'pathologies'"
+          (click)="setTab('pathologies')"
+        >
+          <img
+            class="info-modal__tab-icon"
+            src="assets/images/modal/pathologies.png"
+            alt="Patologías"
+          />
+        </button>
+
+        <button
+          type="button"
+          class="info-modal__tab-btn"
+          [class.info-modal__tab-btn--active]="activeTab() === 'images'"
+          (click)="setTab('images')"
+        >
+          <img class="info-modal__tab-icon" src="assets/images/modal/images.png" alt="Imágenes" />
+        </button>
+      </nav>
+
+      <div class="info-modal__font-controls">
+        <button type="button" class="info-modal__font-btn" (click)="changeFontSize(2)">A+</button>
+        <button type="button" class="info-modal__font-btn" (click)="changeFontSize(-2)">A-</button>
+      </div>
+    </div>
+
+    <!-- Cuerpo principal -->
+    <div class="info-modal__body">
+      <h3 class="info-modal__title">{{ info.name }}</h3>
+
+      @switch (activeTab()) {
+        @case ('info') {
+          <div class="info-modal__content info-modal__content--text">
+            {{ info.description }}
+          </div>
+        }
+        @case ('pathologies') {
+          <div class="info-modal__content">
+            @for (pathology of info.pathologies; track pathology.name) {
+              <div class="info-modal__pathology-card">
+                <h4 class="info-modal__pathology-title">{{ pathology.name }}</h4>
+                <p class="info-modal__pathology-desc">{{ pathology.description }}</p>
+              </div>
+            } @empty {
+              <p class="info-modal__empty-state">Sin patologías asociadas.</p>
+            }
+          </div>
+        }
+        @case ('images') {
+          <div class="info-modal__content">
+            <div class="info-modal__gallery">
+              @for (img of info.images; track img) {
+                <div class="info-modal__gallery-item">
+                  <img
+                    class="info-modal__gallery-img"
+                    [src]="img"
+                    alt="Imagen de la parte del ojo"
+                  />
+                </div>
+              }
+            </div>
+            @if (!info.images.length) {
+              <p class="info-modal__empty-state">
+                {{ 'Pages.3dModel.infoModal.noImagesAvailable' | transloco }}
+              </p>
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+}
