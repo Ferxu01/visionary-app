@@ -1,1 +1,119 @@
-<canvas #myCanvas class="canvas-container"></canvas>
+<div class="scene-overlay">
+  <!-- Barra de Herramientas Superior Flotante -->
+  <header class="scene-overlay__top-bar">
+    <!-- <switch-motores [motor]="motorWebGL()" (switchedEngine)="switchEngine($event)"></switch-motores> -->
+
+    <app-switch-engine [engine]="false" (switchedEngine)="(null)" />
+
+    <div class="scene-overlay__actions">
+      <!-- Botón Reset -->
+      <button
+        type="button"
+        class="scene-overlay__btn"
+        (click)="resetModelPosition()"
+        [title]="'Pages.3dModel.reset' | transloco"
+      >
+        <svg
+          class="scene-overlay__btn-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      </button>
+
+      <!-- Botón Dividir / Ensamblar -->
+      @if (selectedOption() !== 'Frontal') {
+        <button
+          type="button"
+          class="scene-overlay__btn"
+          (click)="toggleExplosion()"
+          [title]="'Pages.3dModel.toggleDivide' | transloco"
+        >
+          @if (isDivided()) {
+            <svg
+              class="scene-overlay__btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 15L4 20m0 0h4m-4 0v-4m11 4l5-5m0 5v-4m0 4h-4M9 9L4 4m0 0h4m-4 0v4m11-4l5 5m0-5v4m0-4h-4"
+              />
+            </svg>
+          } @else {
+            <svg
+              class="scene-overlay__btn-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+              />
+            </svg>
+          }
+        </button>
+      }
+
+      <!-- Menú Desplegable de Modelos -->
+      <div class="scene-dropdown">
+        <button
+          type="button"
+          class="scene-dropdown__trigger"
+          (click)="toggleMenu()"
+          [title]="'Pages.3dModel.changeModel' | transloco"
+        >
+          <span>{{ selectedOption() }}</span>
+          <svg
+            class="scene-dropdown__chevron"
+            [class.scene-dropdown__chevron--rotated]="isMenuOpen()"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <div class="scene-dropdown__menu" [class.scene-dropdown__menu--open]="isMenuOpen()">
+          @for (option of options(); track option) {
+            <button type="button" class="scene-dropdown__item" (click)="selectOption(option)">
+              {{ option }}
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- [name]="selectedPartName()"
+  [description]="selectedPartDescription()"
+  [pathologyData]="selectedPathologies()"
+  [imageData]="selectedImages()" -->
+
+<!-- (downloaded)="onDownloadInfo()" -->
+<app-model-info-modal
+  [visible]="isModalVisible()"
+  [eyePartId]="selectedPartId()"
+  (closed)="closeModal()"
+/>
+<!-- (tabChanged)="setInfotype($event)" -->
+
+<app-instructions-panel />
+
+<canvas #myCanvas class="canvas-container" (click)="onCanvasClick($event)"></canvas>
