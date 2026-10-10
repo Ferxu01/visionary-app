@@ -36,6 +36,10 @@ export class EngineService implements OnDestroy {
   private readonly initialCameraPos = new THREE.Vector3();
   private readonly initialTargetPos = new THREE.Vector3();
 
+  // --- Estado de Foco de Cámara ---
+  private savedFocusCameraPos: THREE.Vector3 | null = null;
+  private savedFocusTargetPos: THREE.Vector3 | null = null;
+
   init(canvas: HTMLCanvasElement): void {
     this.scene = new THREE.Scene();
 
@@ -100,6 +104,8 @@ export class EngineService implements OnDestroy {
   resetModel(): void {
     if (!this.currentModel) return;
 
+    this.resetFocus();
+
     // 1. Restaurar posición y rotación de las partes
     this.currentModel.traverse((child) => {
       if (child instanceof THREE.Mesh && this.initialPositions.has(child)) {
@@ -153,6 +159,10 @@ export class EngineService implements OnDestroy {
     return this.camera;
   }
 
+  getControls(): OrbitControls {
+    return this.controls;
+  }
+
   getScene(): THREE.Scene {
     return this.scene;
   }
@@ -167,6 +177,91 @@ export class EngineService implements OnDestroy {
 
   getCurrentModel(): THREE.Object3D | null {
     return this.currentModel;
+  }
+
+  /**
+   * Guarda la posición actual de la cámara antes de realizar un acercamiento/focus.
+   */
+  storePreFocusCameraState(): void {
+    if (!this.savedFocusCameraPos) {
+      this.savedFocusCameraPos = this.camera.position.clone();
+      this.savedFocusTargetPos = this.controls.target.clone();
+    }
+  }
+
+  animateTransform(
+    target: THREE.Vector3 | THREE.Euler,
+    destination: THREE.Vector3 | THREE.Euler,
+    onUpdate?: () => void,
+  ): void {
+    gsap.to(target, {
+      x: destination.x,
+      y: destination.y,
+      z: destination.z,
+      duration: ANIMATION_DURATION,
+      ease: ANIMATION_EASE,
+      onUpdate: onUpdate,
+    });
+  }
+
+  /**
+   * Restablece la cámara y la opacidad de los materiales al estado previo al foco.
+   */
+  resetFocus(): void {
+    // 1. Restaurar posición de la cámara
+    if (this.savedFocusCameraPos && this.savedFocusTargetPos) {
+      this.animateTransform(this.camera.position, this.savedFocusCameraPos);
+      this.animateTransform(this.controls.target, this.savedFocusTargetPos, () =>
+        this.controls.update(),
+      );
+
+      this.savedFocusCameraPos = null;
+      this.savedFocusTargetPos = null;
+    }
+
+    // 2. Restaurar opacidades originales de todos los materiales
+    this.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+
+        materials.forEach((mat) => {
+          if (mat.userData['origOpacity'] !== undefined) {
+            gsap.to(mat, {
+              opacity: mat.userData['origOpacity'],
+              duration: ANIMATION_DURATION,
+              ease: ANIMATION_EASE,
+              onComplete: () => {
+                mat.transparent = mat.userData['origTransparent'];
+                delete mat.userData['origOpacity'];
+                delete mat.userData['origTransparent'];
+              },
+            });
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Rota el modelo activo o el objeto seleccionado los grados indicados en el eje especificado.
+   */
+  rotateCurrentTarget(
+    degrees: number,
+    axis: 'x' | 'y' | 'z',
+    targetObject?: THREE.Object3D | null,
+    duration: number = ANIMATION_DURATION,
+  ): void {
+    const target = targetObject || this.currentModel;
+    if (!target) return;
+
+    const radians = THREE.MathUtils.degToRad(degrees);
+
+    gsap.to(target.rotation, {
+      [axis]: target.rotation[axis] + radians,
+      duration,
+      ease: ANIMATION_EASE,
+      onUpdate: () => target.updateMatrix(),
+    });
   }
 
   private setupCamera(width: number, height: number): void {
@@ -245,21 +340,6 @@ export class EngineService implements OnDestroy {
     this.initialCameraPos.copy(this.camera.position);
     this.initialTargetPos.copy(targetCenter);
     this.isExploded = false;
-  }
-
-  private animateTransform(
-    target: THREE.Vector3 | THREE.Euler,
-    destination: THREE.Vector3 | THREE.Euler,
-    onUpdate?: () => void,
-  ): void {
-    gsap.to(target, {
-      x: destination.x,
-      y: destination.y,
-      z: destination.z,
-      duration: ANIMATION_DURATION,
-      ease: ANIMATION_EASE,
-      onUpdate: onUpdate,
-    });
   }
 
   private animate = (): void => {

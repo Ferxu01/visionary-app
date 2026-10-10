@@ -18,6 +18,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwitchEngineComponent } from '../../core/components/switch-engine/switch-engine.component';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { MODEL_PATHS, ModelType } from '../../core/three-engine/three-engine.model';
+import { ToggleMoveModeCommand } from '../../core/three-engine/commands/toggle-move-mode-command';
+import { DragManagerService } from '../../core/three-engine/drag-manager.service';
 
 @Component({
   selector: 'app-3d-model',
@@ -234,6 +236,7 @@ export class Model3dComponent implements AfterViewInit {
   private readonly engineService = inject(EngineService);
   private readonly selectionService = inject(SelectionService);
   private readonly inputManager = inject(InputManagerService);
+  private readonly dragManagerService = inject(DragManagerService);
 
   protected canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('myCanvas');
 
@@ -253,18 +256,33 @@ export class Model3dComponent implements AfterViewInit {
     this.engineService.init(this.canvasRef().nativeElement);
     this.selectionService.setOutlinePass(this.engineService.getOutlinePass());
 
+    const canvas = this.engineService.getDomElement();
+
     // 2. Cargar el modelo 3D
     this.engineService.loadModel(MODEL_PATHS['Sin Corte']);
+
+    // Inicializar escuchadores del ratón para arrastre
+    this.dragManagerService.init(canvas);
 
     // 3. Registrar Atajos con Comandos (Desacoplado)
     this.inputManager.registerKeyBinding(
       'h',
       new FocusPartCommand(this.selectionService, this.engineService),
     );
+    this.inputManager.registerKeyBinding('escape', {
+      execute: () => {
+        this.selectionService.clearSelection();
+        this.engineService.resetFocus();
+      },
+    });
+
     this.inputManager.registerKeyBinding(
       'r',
-      new RotateCommand(this.engineService, this.selectionService, 45, 'y'),
+      new RotateCommand(this.engineService, this.selectionService, 90, 'y'),
     );
+
+    // Registrar la tecla 'G' para alternar el modo mover
+    this.inputManager.registerKeyBinding('g', new ToggleMoveModeCommand(this.dragManagerService));
 
     // 4. Suscribirse a la selección para UI Angular
     this.selectionService.selectedObject$
