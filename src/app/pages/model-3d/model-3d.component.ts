@@ -11,7 +11,6 @@ import { EngineService } from '../../core/three-engine/engine.service';
 import { SelectionService } from '../../core/three-engine/selection.service';
 import { InputManagerService } from '../../core/three-engine/input-manager.service';
 import { FocusPartCommand } from '../../core/three-engine/commands/focus-part-command';
-import { RotateCommand } from '../../core/three-engine/commands/rotate-command';
 import { InstructionsPanelComponent } from '../../core/components/instructions-panel/instructions-panel.component';
 import { ModelInfoModalComponent } from '../../core/components/model-info-modal/model-info-modal.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -276,10 +275,10 @@ export class Model3dComponent implements AfterViewInit {
       },
     });
 
-    this.inputManager.registerKeyBinding(
-      'r',
-      new RotateCommand(this.engineService, this.selectionService, 90, 'y'),
-    );
+    // this.inputManager.registerKeyBinding(
+    //   'r',
+    //   new RotateCommand(this.engineService, this.selectionService, 90, 'y'),
+    // );
 
     // Registrar la tecla 'G' para alternar el modo mover
     this.inputManager.registerKeyBinding('g', new ToggleMoveModeCommand(this.dragManagerService));
