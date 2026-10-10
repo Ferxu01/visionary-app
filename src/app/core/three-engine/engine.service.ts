@@ -6,6 +6,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { OutlinePass } from 'three/addons/postprocessing/OutlinePass.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import gsap from 'gsap';
+import { explosionConfigs, ModelType } from './three-engine.model';
 
 @Injectable({ providedIn: 'root' })
 export class EngineService implements OnDestroy {
@@ -16,7 +17,9 @@ export class EngineService implements OnDestroy {
   private composer!: EffectComposer;
   private outlinePass!: OutlinePass;
   private animFrameId!: number;
+
   private currentModel: THREE.Object3D | null = null;
+  private currentModelType: ModelType = 'Sin Corte';
 
   // Mapas para almacenar transformaciones iniciales
   private initialPositions = new Map<THREE.Object3D, THREE.Vector3>();
@@ -63,6 +66,16 @@ export class EngineService implements OnDestroy {
   }
 
   loadModel(path: string, onLoadCallback?: (model: THREE.Object3D) => void): void {
+    // loadModel(
+    //   {
+    //     path,
+    //     modelType = 'Sin Corte',
+    //   }: {
+    //     path: string;
+    //     modelType?: ModelType;
+    //   },
+    //   onLoadCallback?: (model: THREE.Object3D) => void,
+    // ): void {
     const loader = new GLTFLoader();
 
     loader.load(
@@ -74,6 +87,7 @@ export class EngineService implements OnDestroy {
         }
 
         this.currentModel = gltf.scene;
+        // // this.currentModelType = modelType;
 
         // Formatear nombres de las partes a minúsculas
         this.currentModel.traverse((child) => {
@@ -116,6 +130,10 @@ export class EngineService implements OnDestroy {
         console.error('Error al cargar el modelo 3D:', error);
       },
     );
+  }
+
+  setModelType(modelType: ModelType): void {
+    this.currentModelType = modelType;
   }
 
   private saveInitialState(targetCenter: THREE.Vector3): void {
@@ -190,39 +208,85 @@ export class EngineService implements OnDestroy {
   /**
    * Alterna entre el modelo ensamblado y desglosado (explotado).
    */
+  // toggleExplosion(): boolean {
+  //   if (!this.currentModel) return false;
+
+  //   const center = new THREE.Vector3();
+  //   let count = 0;
+
+  //   this.currentModel.traverse((child) => {
+  //     if (child instanceof THREE.Mesh) {
+  //       center.add(child.position);
+  //       count++;
+  //     }
+  //   });
+
+  //   if (count > 0) center.divideScalar(count);
+
+  //   this.currentModel.traverse((child) => {
+  //     if (child instanceof THREE.Mesh && this.initialPositions.has(child)) {
+  //       const initialPos = this.initialPositions.get(child)!;
+  //       const direction = initialPos.clone().sub(center).normalize();
+
+  //       // Determinar distancias relativas por nombre de capa
+  //       let explosionDistance = 1.0;
+  //       const name = child.name.toLowerCase();
+
+  //       if (name.includes('cornea')) explosionDistance = 2.0;
+  //       else if (name.includes('iris')) explosionDistance = 1.4;
+  //       else if (name.includes('pupila')) explosionDistance = 0.8;
+  //       else if (name.includes('cristalino')) explosionDistance = 0.4;
+
+  //       const targetPosition = this.isExploded
+  //         ? initialPos.clone()
+  //         : initialPos.clone().add(direction.multiplyScalar(explosionDistance));
+
+  //       gsap.to(child.position, {
+  //         x: targetPosition.x,
+  //         y: targetPosition.y,
+  //         z: targetPosition.z,
+  //         duration: 1.2,
+  //         ease: 'power2.out',
+  //       });
+  //     }
+  //   });
+
+  //   this.isExploded = !this.isExploded;
+  //   return this.isExploded;
+  // }
+
   toggleExplosion(): boolean {
     if (!this.currentModel) return false;
 
-    const center = new THREE.Vector3();
-    let count = 0;
+    // TODO: REVISAR SI ES NECESARIO
+    // 1. Guardar posiciones iniciales en el mapa si aún no están registradas
+    // if (!this.initialPositions.size) {
+    //   this.currentModel.traverse((child) => {
+    //     if (child instanceof THREE.Mesh) {
+    //       this.initialPositions.set(child, child.position.clone());
+    //     }
+    //   });
+    // }
 
-    this.currentModel.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        center.add(child.position);
-        count++;
-      }
-    });
+    // Obtener la configuración correspondiente al modelo cargado
+    const currentConfig = explosionConfigs[this.currentModelType] || {};
 
-    if (count > 0) center.divideScalar(count);
-
+    // 2. Iterar sobre las mallas y aplicar animación según la pieza
     this.currentModel.traverse((child) => {
       if (child instanceof THREE.Mesh && this.initialPositions.has(child)) {
         const initialPos = this.initialPositions.get(child)!;
-        const direction = initialPos.clone().sub(center).normalize();
 
-        // Determinar distancias relativas por nombre de capa
-        let explosionDistance = 1.0;
-        const name = child.name.toLowerCase();
+        const normalizedName = child.name.trim().toLowerCase().replace(/_\d+$/, '');
 
-        if (name.includes('cornea')) explosionDistance = 2.0;
-        else if (name.includes('iris')) explosionDistance = 1.4;
-        else if (name.includes('pupila')) explosionDistance = 0.8;
-        else if (name.includes('cristalino')) explosionDistance = 0.4;
+        // Obtener el vector de offset de la configuración actual (o Vector3(0,0,0) por defecto)
+        const offsetVector = currentConfig[normalizedName] || new THREE.Vector3(0, 0, 0);
 
+        // Calcular posición objetivo (si está explotado regresa a la inicial, sino añade el offset)
         const targetPosition = this.isExploded
           ? initialPos.clone()
-          : initialPos.clone().add(direction.multiplyScalar(explosionDistance));
+          : initialPos.clone().add(offsetVector);
 
+        // Animar con GSAP
         gsap.to(child.position, {
           x: targetPosition.x,
           y: targetPosition.y,

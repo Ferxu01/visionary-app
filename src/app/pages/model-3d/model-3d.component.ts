@@ -17,11 +17,7 @@ import { ModelInfoModalComponent } from '../../core/components/model-info-modal/
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwitchEngineComponent } from '../../core/components/switch-engine/switch-engine.component';
 import { TranslocoPipe } from '@jsverse/transloco';
-
-type ModelKey = 'Sin Corte' | 'Sagital' | 'Frontal';
-type BaseRoute = 'assets/models/';
-type ModelRoute =
-  `${BaseRoute}ojo.glb` | `${BaseRoute}ojo_interno.glb` | `${BaseRoute}retinografia.glb`;
+import { modelPaths, ModelType } from '../../core/three-engine/three-engine.model';
 
 @Component({
   selector: 'app-3d-model',
@@ -245,18 +241,12 @@ export class Model3dComponent implements AfterViewInit {
   public readonly isModalVisible = signal(false);
 
   protected readonly isDivided = signal(false);
-  // // protected readonly motorWebGL = signal(false);
+  // protected readonly motorWebGL = signal(false);
 
   // Selector de vista de modelo
   protected readonly isMenuOpen = signal(false);
-  protected readonly selectedOption = signal<ModelKey>('Sin Corte');
-  protected readonly options = signal<ModelKey[]>(['Sin Corte', 'Sagital', 'Frontal']);
-
-  private readonly modelPaths: Record<ModelKey, ModelRoute> = {
-    'Sin Corte': 'assets/models/ojo.glb',
-    Sagital: 'assets/models/ojo_interno.glb',
-    Frontal: 'assets/models/retinografia.glb',
-  };
+  protected readonly selectedOption = signal<ModelType>('Sin Corte');
+  protected readonly options = signal<ModelType[]>(['Sin Corte', 'Sagital', 'Frontal']);
 
   ngAfterViewInit(): void {
     // 1. Inicializar Engine
@@ -264,7 +254,7 @@ export class Model3dComponent implements AfterViewInit {
     this.selectionService.setOutlinePass(this.engineService.getOutlinePass());
 
     // 2. Cargar el modelo 3D
-    this.engineService.loadModel(this.modelPaths['Sin Corte']);
+    this.engineService.loadModel(modelPaths['Sin Corte']);
 
     // 3. Registrar Atajos con Comandos (Desacoplado)
     this.inputManager.registerKeyBinding(
@@ -345,14 +335,16 @@ export class Model3dComponent implements AfterViewInit {
     this.isMenuOpen.update((v) => !v);
   }
 
-  protected selectOption(option: ModelKey): void {
+  protected selectOption(option: ModelType): void {
     this.selectedOption.set(option);
+    this.engineService.setModelType(this.selectedOption());
     this.isMenuOpen.set(false);
 
     // Cargar el modelo GLTF correspondiente a la opción seleccionada
-    const path = this.modelPaths[option] || this.modelPaths['Sin Corte'];
+    const modelPath = modelPaths[this.selectedOption()] || modelPaths['Sin Corte'];
     this.selectionService.clearSelection();
     this.isDivided.set(false);
-    this.engineService.loadModel(path);
+
+    this.engineService.loadModel(modelPath);
   }
 }
