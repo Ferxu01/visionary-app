@@ -59,13 +59,7 @@ export class EngineService implements OnDestroy {
     loader.load(
       path,
       (gltf) => {
-        // Limpiar modelo anterior si existe
-        // this.clearCurrentModel();
-
-        // Limpiar modelo anterior si existe
-        if (this.currentModel) {
-          this.scene.remove(this.currentModel);
-        }
+        this.clearCurrentModel();
 
         this.currentModel = gltf.scene;
 
@@ -280,7 +274,9 @@ export class EngineService implements OnDestroy {
     this.currentModel.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         // 1. Libera los vértices y caras (VBOs) de la GPU
-        child.geometry?.dispose();
+        if (child.geometry) {
+          child.geometry.dispose();
+        }
 
         // 2. Libera los shaders y mapas de texturas asociados
         if (Array.isArray(child.material)) {
@@ -296,14 +292,27 @@ export class EngineService implements OnDestroy {
   }
 
   private disposeMaterial(material: THREE.Material): void {
-    material.dispose(); // Libera el programa de renderizado/shader
+    // Liberar el programa/shader de la GPU
+    material.dispose();
 
-    // Si el material tiene texturas cargadas (map, normalMap, roughnessMap, etc.), hay que liberarlas explícitamente:
-    Object.keys(material).forEach((prop) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const value = (material as any)[prop];
-      if (value && typeof value === 'object' && 'dispose' in value) {
-        value.dispose(); // Libera la textura de la VRAM
+    // Liberar explícitamente las texturas asignadas al material
+    const textureProperties = [
+      'map',
+      'alphaMap',
+      'aoMap',
+      'bumpMap',
+      'displacementMap',
+      'envMap',
+      'lightMap',
+      'metalnessMap',
+      'normalMap',
+      'roughnessMap',
+    ];
+
+    textureProperties.forEach((prop) => {
+      const texture = (material as unknown as Record<string, unknown>)[prop];
+      if (texture && texture instanceof THREE.Texture) {
+        texture.dispose();
       }
     });
   }
