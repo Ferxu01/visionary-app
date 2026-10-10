@@ -25,13 +25,13 @@ type BaseRoute = 'assets/models/';
 type ModelRoute =
   `${BaseRoute}ojo.glb` | `${BaseRoute}ojo_interno.glb` | `${BaseRoute}retinografia.glb`;
 
-export const modelPaths: Record<ModelType, ModelRoute> = {
+export const MODEL_PATHS: Record<ModelType, ModelRoute> = {
   'Sin Corte': 'assets/models/ojo.glb',
   Sagital: 'assets/models/ojo_interno.glb',
   Frontal: 'assets/models/retinografia.glb',
 };
 
-export const explosionConfigs: Record<ModelType, Record<string, THREE.Vector3>> = {
+export const EXPLOSION_CONFIGS: Record<ModelType, Record<string, THREE.Vector3>> = {
   // Modelo entero (Sin Corte): Desplazamiento lineal en eje Z
   'Sin Corte': {
     cornea: new THREE.Vector3(0, 0, 2.0),
@@ -61,3 +61,7 @@ export const explosionConfigs: Record<ModelType, Record<string, THREE.Vector3>> 
     cornea: new THREE.Vector3(0, 0, 1.5),
   },
 };
+
+export const ANIMATION_DURATION = 1.2;
+export const ANIMATION_EASE = 'power2.out';
+export const OUTLINE_VISIBLE_COLOR_RGB = '#ff0000';

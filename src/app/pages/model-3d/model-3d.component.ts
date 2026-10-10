@@ -17,7 +17,7 @@ import { ModelInfoModalComponent } from '../../core/components/model-info-modal/
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SwitchEngineComponent } from '../../core/components/switch-engine/switch-engine.component';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { modelPaths, ModelType } from '../../core/three-engine/three-engine.model';
+import { MODEL_PATHS, ModelType } from '../../core/three-engine/three-engine.model';
 
 @Component({
   selector: 'app-3d-model',
@@ -254,7 +254,7 @@ export class Model3dComponent implements AfterViewInit {
     this.selectionService.setOutlinePass(this.engineService.getOutlinePass());
 
     // 2. Cargar el modelo 3D
-    this.engineService.loadModel(modelPaths['Sin Corte']);
+    this.engineService.loadModel(MODEL_PATHS['Sin Corte']);
 
     // 3. Registrar Atajos con Comandos (Desacoplado)
     this.inputManager.registerKeyBinding(
@@ -322,7 +322,6 @@ export class Model3dComponent implements AfterViewInit {
   }
 
   protected toggleExplosion(): void {
-    // this.isDivided.update((v) => !v);
     const newState = this.engineService.toggleExplosion();
     this.isDivided.set(newState);
   }
@@ -341,7 +340,7 @@ export class Model3dComponent implements AfterViewInit {
     this.isMenuOpen.set(false);
 
     // Cargar el modelo GLTF correspondiente a la opción seleccionada
-    const modelPath = modelPaths[this.selectedOption()] || modelPaths['Sin Corte'];
+    const modelPath = MODEL_PATHS[this.selectedOption()] || MODEL_PATHS['Sin Corte'];
     this.selectionService.clearSelection();
     this.isDivided.set(false);
 
