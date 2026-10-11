@@ -19,6 +19,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { MODEL_PATHS, ModelType } from '../../core/three-engine/three-engine.model';
 import { ToggleMoveModeCommand } from '../../core/three-engine/commands/toggle-move-mode-command';
 import { DragManagerService } from '../../core/three-engine/drag-manager.service';
+import { DropdownComponent } from '../../core/components/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-3d-model',
@@ -28,6 +29,7 @@ import { DragManagerService } from '../../core/three-engine/drag-manager.service
     InstructionsPanelComponent,
     ModelInfoModalComponent,
     SwitchEngineComponent,
+    DropdownComponent,
   ],
 })
 // export class Model3dComponent implements AfterViewInit, OnDestroy {
@@ -246,7 +248,6 @@ export class Model3dComponent implements AfterViewInit {
   // protected readonly motorWebGL = signal(false);
 
   // Selector de vista de modelo
-  protected readonly isMenuOpen = signal(false);
   protected readonly selectedOption = signal<ModelType>('Sin Corte');
   protected readonly options = signal<ModelType[]>(['Sin Corte', 'Sagital', 'Frontal']);
 
@@ -347,14 +348,9 @@ export class Model3dComponent implements AfterViewInit {
   //   this.motorWebGL.set(motor === 'Webgl');
   // }
 
-  protected toggleMenu(): void {
-    this.isMenuOpen.update((v) => !v);
-  }
-
   protected selectOption(option: ModelType): void {
     this.selectedOption.set(option);
     this.engineService.setModelType(this.selectedOption());
-    this.isMenuOpen.set(false);
 
     // Cargar el modelo GLTF correspondiente a la opción seleccionada
     const modelPath = MODEL_PATHS[this.selectedOption()] || MODEL_PATHS['Sin Corte'];

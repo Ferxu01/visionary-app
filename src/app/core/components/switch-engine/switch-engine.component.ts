@@ -1,6 +1,8 @@
 import { Component, computed, input, output } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 
+type Engine = 'Threejs' | 'Webgl';
+
 @Component({
   selector: 'app-switch-engine',
   templateUrl: './switch-engine.component.html',
@@ -8,7 +10,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 })
 export class SwitchEngineComponent {
   readonly engine = input(false);
-  readonly switchedEngine = output<'Threejs' | 'Webgl'>();
+  readonly switchedEngine = output<Engine>();
 
   protected readonly currentEngine = computed(() => (this.engine() ? 'Webgl' : 'Threejs'));
 

@@ -1,8 +1,6 @@
 <div class="engine-switch">
   <span class="engine-switch__label">
-    {{
-      (isThreeEngine() ? 'Pages.3dModel.threejsEngine' : 'Pages.3dModel.webglEngine') | transloco
-    }}
+    {{ (isThreeEngine() ? 'threeEngine' : 'webglEngine') | transloco }}
   </span>
   <label class="engine-switch__toggle">
     <input

@@ -28,7 +28,11 @@ export class DropdownComponent {
     this.isOpen.update((prev) => !prev);
   }
 
-  protected close(): void {
+  isOpened(): boolean {
+    return this.isOpen();
+  }
+
+  close(): void {
     this.isOpen.set(false);
   }
 

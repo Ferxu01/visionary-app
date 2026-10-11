@@ -1,8 +1,6 @@
 <div class="scene-overlay">
   <!-- Barra de Herramientas Superior Flotante -->
   <header class="scene-overlay__top-bar">
-    <!-- <switch-motores [motor]="motorWebGL()" (switchedEngine)="switchEngine($event)"></switch-motores> -->
-
     <app-switch-engine [engine]="false" (switchedEngine)="(null)" />
 
     <div class="scene-overlay__actions">
@@ -11,7 +9,7 @@
         type="button"
         class="scene-overlay__btn"
         (click)="resetModelPosition()"
-        [title]="'Pages.3dModel.reset' | transloco"
+        [title]="'reset' | transloco"
       >
         <svg
           class="scene-overlay__btn-icon"
@@ -28,13 +26,13 @@
         </svg>
       </button>
 
-      <!-- Botón Dividir / Ensamblar -->
+      <!-- Botón Expandir / Dividir -->
       @if (selectedOption() !== 'Frontal') {
         <button
           type="button"
           class="scene-overlay__btn"
           (click)="toggleExplosion()"
-          [title]="'Pages.3dModel.toggleDivide' | transloco"
+          [title]="'toggleExpand' | transloco"
         >
           @if (isDivided()) {
             <svg
@@ -69,44 +67,45 @@
       }
 
       <!-- Menú Desplegable de Modelos -->
-      <div class="scene-dropdown">
-        <button
-          type="button"
-          class="scene-dropdown__trigger"
-          (click)="toggleMenu()"
-          [title]="'Pages.3dModel.changeModel' | transloco"
-        >
-          <span>{{ selectedOption() }}</span>
-          <svg
-            class="scene-dropdown__chevron"
-            [class.scene-dropdown__chevron--rotated]="isMenuOpen()"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+      <app-dropdown #modelPartsDropdown>
+        <ng-template #dropdownTrigger>
+          <div class="scene-dropdown__wrapper">
+            <span>{{ selectedOption() }}</span>
+            <svg
+              class="scene-dropdown__chevron"
+              [class.scene-dropdown__chevron--rotated]="modelPartsDropdown.isOpened()"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </ng-template>
 
-        <div class="scene-dropdown__menu" [class.scene-dropdown__menu--open]="isMenuOpen()">
-          @for (option of options(); track option) {
-            <button type="button" class="scene-dropdown__item" (click)="selectOption(option)">
-              {{ option }}
-            </button>
-          }
-        </div>
-      </div>
+        <ng-template #dropdownContent>
+          <ul class="scene-dropdown__list" role="menu">
+            @for (option of options(); track option) {
+              <li class="scene-dropdown__item" role="none">
+                <button
+                  type="button"
+                  class="scene-dropdown__option"
+                  [class.scene-dropdown__option--active]="option === selectedOption()"
+                  (click)="selectOption(option); modelPartsDropdown.close()"
+                  role="menuitem"
+                >
+                  <span class="scene-dropdown__label">{{ option }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        </ng-template>
+      </app-dropdown>
     </div>
   </header>
 </div>
 
-<!-- [name]="selectedPartName()"
-  [description]="selectedPartDescription()"
-  [pathologyData]="selectedPathologies()"
-  [imageData]="selectedImages()" -->
-
-<!-- (downloaded)="onDownloadInfo()" -->
 <app-model-info-modal
   [visible]="isModalVisible()"
   [eyePartId]="selectedPartId()"
