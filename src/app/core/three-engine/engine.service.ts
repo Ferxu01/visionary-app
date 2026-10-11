@@ -82,12 +82,7 @@ export class EngineService implements OnDestroy {
           onLoadCallback(this.currentModel);
         }
       },
-      (xhr) => {
-        if (xhr.total > 0) {
-          const percent = Math.round((xhr.loaded / xhr.total) * 100);
-          console.log(`Cargando modelo: ${percent}%`);
-        }
-      },
+      undefined,
       (error) => {
         console.error('Error al cargar el modelo 3D:', error);
       },

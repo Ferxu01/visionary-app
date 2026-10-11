@@ -43,9 +43,6 @@ export class ModelInfoModalComponent {
 
   protected downloadInfo(): void {
     const eyePartId = this.eyePartId();
-    console.log('Descargando información de:', eyePartId);
-    console.log(this.currentPartInfo());
-
     if (!eyePartId) return;
     this.exportInfoService.downloadInfoAsPDFAndZip(eyePartId);
   }
