@@ -1,3 +1,5 @@
+@use '../abstracts/variables' as *;
+
 // // img,
 // // svg {
 // .icon {
@@ -12,6 +14,7 @@
   width: 1.75rem; // 28px
   height: 1.75rem;
   pointer-events: none;
+  margin: 0 $space-xs;
 
   img {
     width: 100%;

@@ -1,8 +1,9 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
-// Variable local de ancho del sidebar
+// Variables de ancho de sidebar
 $sidebar-width: 260px;
+$sidebar-collapsed-width: 72px; // Ancho cuando está colapsado (solo iconos)
 
 :host {
   display: block;
@@ -18,13 +19,57 @@ $sidebar-width: 260px;
   background-color: var(--bg-sidebar, #111827);
   color: var(--text-sidebar, #ffffff);
   transition:
-    transform 0.3s ease,
-    margin-left 0.3s ease;
+    width 0.3s ease,
+    padding 0.3s ease;
   flex-shrink: 0;
   z-index: 20;
+  overflow-x: hidden;
 
   &--collapsed {
-    margin-left: -$sidebar-width;
+    width: $sidebar-collapsed-width;
+
+    .nav__link {
+      justify-content: center;
+      padding: $space-md 0; // Centrar el icono horizontalmente
+
+      // Ocultar el contenedor de texto (título)
+      .nav__link-content {
+        display: none;
+      }
+
+      // Asegurar que el icono no tenga margen derecho forzado cuando está solo
+      .icon {
+        margin-right: 0 !important;
+      }
+    }
+
+    // 1. Reducir logo o centrarlo si es necesario
+    .sidebar__logo-container {
+      padding: $space-md;
+      justify-content: center;
+    }
+
+    .sidebar__logo {
+      width: 24px; // Logo más pequeño en modo colapsado
+    }
+
+    // 2. Adaptar la sección de usuario
+    .sidebar__user {
+      padding: $space-sm;
+    }
+
+    .sidebar__avatar-wrapper {
+      width: 2.5rem; // Avatar compacto de 40px tipo icono
+      height: 2.5rem;
+    }
+
+    // Ocultar nombre y correo en modo colapsado
+    .sidebar__user-details {
+      display: none;
+    }
+
+    // 3. Adaptar los elementos de navegación para ocultar los textos y centrar iconos
+    // (Esto aplicará clases o selectores dentro de tu navigation component si lo deseas)
   }
 
   // Modificador cuando la barra lateral está desactivada globalmente
@@ -42,6 +87,7 @@ $sidebar-width: 260px;
   &__logo {
     width: $space-xl; // 32px
     height: auto;
+    transition: width 0.3s ease;
   }
 
   &__user {
@@ -50,6 +96,7 @@ $sidebar-width: 260px;
     align-items: center;
     width: 100%;
     padding: $space-md; // 16px
+    transition: padding 0.3s ease;
   }
 
   &__avatar-wrapper {
@@ -61,6 +108,9 @@ $sidebar-width: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition:
+      width 0.3s ease,
+      height 0.3s ease;
   }
 
   &__avatar {
@@ -77,6 +127,8 @@ $sidebar-width: 260px;
     width: 100%;
     margin-top: $space-lg; // 24px
     text-align: center;
+    opacity: 1;
+    transition: opacity 0.2s ease;
   }
 
   &__user-name {
