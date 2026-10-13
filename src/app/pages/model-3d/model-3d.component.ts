@@ -20,6 +20,9 @@ import { MODEL_PATHS, ModelType } from '../../core/three-engine/three-engine.mod
 import { ToggleMoveModeCommand } from '../../core/three-engine/commands/toggle-move-mode-command';
 import { DragManagerService } from '../../core/three-engine/drag-manager.service';
 import { DropdownComponent } from '../../core/components/dropdown/dropdown.component';
+import { KeyboardIndicatorService } from '../../core/components/keyboard-indicator/keyboard-indicator.service';
+import { KeyboardIndicatorComponent } from '../../core/components/keyboard-indicator/keyboard-indicator.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-3d-model',
@@ -30,6 +33,7 @@ import { DropdownComponent } from '../../core/components/dropdown/dropdown.compo
     ModelInfoModalComponent,
     SwitchEngineComponent,
     DropdownComponent,
+    KeyboardIndicatorComponent,
   ],
 })
 export class Model3dComponent implements AfterViewInit {
@@ -38,6 +42,7 @@ export class Model3dComponent implements AfterViewInit {
   private readonly selectionService = inject(SelectionService);
   private readonly inputManager = inject(InputManagerService);
   private readonly dragManagerService = inject(DragManagerService);
+  private readonly indicatorService = inject(KeyboardIndicatorService);
 
   private readonly canvasRef = viewChild.required<ElementRef<HTMLCanvasElement>>('myCanvas');
 
@@ -51,7 +56,6 @@ export class Model3dComponent implements AfterViewInit {
   protected readonly options = signal<ModelType[]>(['Sin Corte', 'Sagital', 'Frontal']);
 
   ngAfterViewInit(): void {
-    // 1. Inicializar Engine
     this.engineService.init(this.canvasRef().nativeElement);
     this.selectionService.setOutlinePass(this.engineService.getOutlinePass());
 
@@ -60,42 +64,27 @@ export class Model3dComponent implements AfterViewInit {
     // 2. Cargar el modelo 3D
     this.engineService.loadModel(MODEL_PATHS['Sin Corte']);
 
-    // 3. Inicializar escuchadores del ratón para arrastre
+    // 3. Inicializar mouse listeners para arrastrar
     this.dragManagerService.init(canvas);
 
-    // 4. Registrar Atajos con Comandos (Desacoplado)
-    this.inputManager.registerKeyBinding(
-      'h',
-      new FocusPartCommand(this.selectionService, this.engineService),
-    );
-    this.inputManager.registerKeyBinding('escape', {
-      execute: () => {
-        this.selectionService.clearSelection();
-        this.engineService.resetFocus();
-      },
-    });
+    // 4. Registrar Atajos con Comandos
+    this.initModelCommands();
 
-    // this.inputManager.registerKeyBinding(
-    //   'r',
-    //   new RotateCommand(this.engineService, this.selectionService, 90, 'y'),
-    // );
-
-    // Registrar la tecla 'G' para alternar el modo mover
-    this.inputManager.registerKeyBinding('g', new ToggleMoveModeCommand(this.dragManagerService));
-
-    // 5. Suscribirse a la selección para UI Angular
     this.selectionService.selectedObject$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((selectedPart) => {
-        if (selectedPart) {
-          const rawName = selectedPart.name.toLowerCase().trim();
-          this.selectedPartId.set(rawName);
-          this.isModalVisible.set(true);
-        } else {
-          this.isModalVisible.set(false);
-          this.selectedPartId.set(null);
-        }
-      });
+      .pipe(
+        tap((selectedPart) => {
+          if (selectedPart) {
+            const rawName = selectedPart.name.toLowerCase().trim();
+            this.selectedPartId.set(rawName);
+            this.isModalVisible.set(true);
+          } else {
+            this.selectedPartId.set(null);
+            this.isModalVisible.set(false);
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
   }
 
   protected onCanvasClick(event: MouseEvent): void {
@@ -137,5 +126,30 @@ export class Model3dComponent implements AfterViewInit {
     this.isDivided.set(false);
 
     this.engineService.loadModel(modelPath);
+  }
+
+  private initModelCommands(): void {
+    this.inputManager.registerKeyBinding(
+      'h',
+      new FocusPartCommand(this.selectionService, this.engineService, this.indicatorService),
+    );
+
+    this.inputManager.registerKeyBinding('escape', {
+      execute: () => {
+        this.selectionService.clearSelection();
+        this.engineService.resetFocus();
+      },
+    });
+
+    // this.inputManager.registerKeyBinding(
+    //   'r',
+    //   new RotateCommand(this.engineService, this.selectionService, 90, 'y'),
+    // );
+
+    // Registrar la tecla 'G' para alternar el modo mover
+    this.inputManager.registerKeyBinding(
+      'g',
+      new ToggleMoveModeCommand(this.dragManagerService, this.indicatorService),
+    );
   }
 }

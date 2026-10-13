@@ -1,0 +1,33 @@
+@use '../abstracts/keyframes' as *;
+
+.active-mode-tag {
+  height: 42px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(147, 51, 234, 0.25);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  border-radius: 12px;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(126, 34, 206, 0.25);
+  animation: fadeInScale 0.2s ease-out;
+
+  &__key {
+    background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+    color: #ffffff;
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}

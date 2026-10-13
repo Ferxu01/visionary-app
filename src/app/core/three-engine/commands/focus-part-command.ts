@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { EngineService } from '../engine.service';
 import { SelectionService } from '../selection.service';
 import { ANIMATION_DURATION, ANIMATION_EASE } from '../three-engine.model';
+import { KeyboardIndicatorService } from '../../components/keyboard-indicator/keyboard-indicator.service';
 
 const DEFAULT_MESH_OPACITY = 0.05; // 0.15 antes
 
@@ -11,6 +12,7 @@ export class FocusPartCommand implements Command {
   constructor(
     private selectionService: SelectionService,
     private engineService: EngineService,
+    private indicatorService: KeyboardIndicatorService,
   ) {}
 
   execute(): void {
@@ -50,6 +52,9 @@ export class FocusPartCommand implements Command {
 
     // 5. Aplicar transparencia atenuada al resto de mallas no seleccionadas
     this.applyFocusTransparency(scene, selected);
+
+    // TODO: REVISAR FUNCIONAMIENTO DESPUES
+    this.indicatorService.setMode('H', 'Modo Enfocar selección');
   }
 
   private applyFocusTransparency(scene: THREE.Scene, focusedObject: THREE.Object3D): void {

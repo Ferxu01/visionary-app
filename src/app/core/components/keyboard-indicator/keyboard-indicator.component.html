@@ -1,0 +1,6 @@
+@if (activeMode(); as mode) {
+  <div class="active-mode-tag">
+    <kbd class="active-mode-tag__key">{{ mode.key }}</kbd>
+    <span class="active-mode-tag__label">{{ mode.action }}</span>
+  </div>
+}
