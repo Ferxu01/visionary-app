@@ -4,12 +4,14 @@
     <app-switch-engine [engine]="false" (switchedEngine)="(null)" />
 
     <div class="scene-overlay__actions">
+      <app-keyboard-indicator />
+
       <!-- Botón Reset -->
       <button
         type="button"
         class="scene-overlay__btn"
         (click)="resetModelPosition()"
-        [title]="'reset' | transloco"
+        [title]="'RESET' | transloco"
       >
         <svg
           class="scene-overlay__btn-icon"
@@ -32,7 +34,7 @@
           type="button"
           class="scene-overlay__btn"
           (click)="toggleExplosion()"
-          [title]="'toggleExpand' | transloco"
+          [title]="'TOGGLE_EXPAND' | transloco"
         >
           @if (isDivided()) {
             <svg

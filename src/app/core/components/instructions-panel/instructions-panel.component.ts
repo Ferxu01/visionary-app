@@ -15,23 +15,23 @@ export class InstructionsPanelComponent {
   protected readonly isOpen = signal(false);
 
   protected readonly instructions: InstructionItem[] = [
-    { icon: 'assets/images/instructions/move.png', labelKey: 'Pages.3dModel.instructions.move' },
+    { icon: 'assets/images/instructions/move.png', labelKey: 'MOVE' },
     {
       icon: 'assets/images/instructions/rotate.png',
-      labelKey: 'Pages.3dModel.instructions.rotate',
+      labelKey: 'ROTATE',
     },
-    { icon: 'assets/images/instructions/zoom.png', labelKey: 'Pages.3dModel.instructions.zoom' },
+    { icon: 'assets/images/instructions/zoom.png', labelKey: 'ZOOM' },
     {
       icon: 'assets/images/instructions/select.png',
-      labelKey: 'Pages.3dModel.instructions.select',
+      labelKey: 'SELECT',
     },
     {
       icon: 'assets/images/instructions/focus.png',
-      labelKey: 'Pages.3dModel.instructions.focus',
+      labelKey: 'FOCUS',
     },
     {
       icon: 'assets/images/instructions/blur.png',
-      labelKey: 'Pages.3dModel.instructions.defocus',
+      labelKey: 'BLUR',
     },
   ];
 
