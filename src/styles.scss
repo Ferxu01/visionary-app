@@ -2,24 +2,25 @@
 // @use 'styles/abstracts/variables' as *;
 
 // 2. Base (Estilos globales)
-@use 'styles/base/reset';
+@use 'base/reset';
 
 // 3. Layouts (Macrocomponentes estructurales)
-@use 'styles/layout/layout';
-@use 'styles/layout/navigation';
-@use 'styles/layout/navigation-item';
-@use 'styles/layout/sidebar';
+@use 'layout/layout';
+@use 'layout/navigation';
+@use 'layout/navigation-item';
+@use 'layout/sidebar';
 
 // 4. Components (Microcomponentes reutilizables)
-@use 'styles/components/icon.component';
-@use 'styles/components/dropdown.component';
-@use 'styles/components/languages.component';
-@use 'styles/components/theme.component';
+@use 'components/icon.component';
+@use 'components/dropdown.component';
+@use 'components/languages.component';
+@use 'components/theme.component';
 // @use 'components/button';
 
-@use 'styles/components/model-3d.component';
-@use 'styles/components/instructions-panel.component';
-@use 'styles/components/model-info-modal.component';
-@use 'styles/components/switch-engine.component';
+@use 'components/model-3d.component';
+// @use 'components/instructions-panel.component';
+@use 'components/instruction-detail-modal.component';
+@use 'components/model-info-modal.component';
+@use 'components/switch-engine.component';
 
-@use 'styles/components/keyboard-indicator.component';
+@use 'components/keyboard-indicator.component';
