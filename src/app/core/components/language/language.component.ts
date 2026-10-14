@@ -1,13 +1,13 @@
-import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
+import { Component, inject, linkedSignal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
-import { DropdownComponent } from '../dropdown/dropdown.component';
+import { SelectorComponent } from '../selector/selector.component';
 import { AVAILABLE_LANGUAGES, defaultLang, LangCode, Language } from './language.model';
 
 @Component({
   selector: 'app-language',
   templateUrl: './language.component.html',
-  imports: [DropdownComponent],
+  imports: [SelectorComponent],
 })
 export class LanguageComponent {
   private readonly _translocoService = inject(TranslocoService);
@@ -22,11 +22,6 @@ export class LanguageComponent {
     () => (this._externalLang() as LangCode) ?? defaultLang,
   );
 
-  protected readonly currentFlag = computed(() => {
-    const selectedLang = this.selectedLang();
-    return this.getFlag(selectedLang);
-  });
-
   // constructor() {
   //   effect(() => {
   //     const lang = this.activeLang();
@@ -34,14 +29,6 @@ export class LanguageComponent {
   //     localStorage.setItem('lang', lang);
   //   });
   // }
-
-  protected selectLang(lang: LangCode): void {
-    this.selectedLang.set(lang);
-  }
-
-  protected getFlag(lang: LangCode): string {
-    return `assets/images/flags/${lang.toLowerCase()}.svg`;
-  }
 
   // TODO: MAYBE USEFUL USING IT
   private isValidLangCode(langCode: string): langCode is LangCode {

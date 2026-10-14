@@ -7,19 +7,35 @@
     border-radius: $radius-md;
     border: 1px solid rgba(255, 255, 255, 0.15);
     // background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
-    color: #ffffff;
+    color: var(--text-color, #ffffff);
     font-size: $font-size-200; // 14px
     font-weight: $font-weight-semibold;
     display: flex;
     align-items: center;
     gap: $space-sm;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(126, 34, 206, 0.4);
-    transition: all 0.2s ease;
+  }
 
-    &:hover {
-      box-shadow: 0 10px 24px rgba(126, 34, 206, 0.6);
+  &--icon-only {
+    .selector__wrapper {
+      padding: 0 $space-sm;
+
+      > span {
+        display: none;
+      }
     }
+
+    .selector__chevron {
+      display: none;
+    }
+  }
+
+  &__current-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__chevron {

@@ -12,9 +12,16 @@ export class SelectorComponent<T = object> {
   options = input.required<readonly T[]>();
   labelKey = input.required<keyof T | string>();
   valueKey = input.required<keyof T | string>();
+  iconKey = input<keyof T | string>();
 
   selectedId = model.required<any>();
   selectionChange = output<any>();
+
+  protected readonly currentOption = computed(() => {
+    const id = this.selectedId();
+    if (id == null) return null;
+    return this.options().find((opt) => this.getValue(opt) === id) || null;
+  });
 
   protected readonly currentLabel = computed(() => {
     const id = this.selectedId();
@@ -24,6 +31,11 @@ export class SelectorComponent<T = object> {
     return found ? this.getLabel(found) : '';
   });
 
+  protected readonly currentIcon = computed(() => {
+    const found = this.currentOption();
+    return found ? this.getIcon(found) : '';
+  });
+
   protected getLabel(option: T): string {
     const val = this.getProp(option, this.labelKey());
     return val != null ? String(val) : '';
@@ -31,6 +43,13 @@ export class SelectorComponent<T = object> {
 
   protected getValue(option: T): any {
     return this.getProp(option, this.valueKey());
+  }
+
+  protected getIcon(option: T): string {
+    const key = this.iconKey();
+    if (!key) return '';
+    const val = this.getProp(option, key);
+    return val != null ? String(val) : '';
   }
 
   protected isSelected(option: T): boolean {

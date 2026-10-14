@@ -1,6 +1,9 @@
 <app-dropdown #dropdown>
   <ng-template #dropdownTrigger>
     <div class="selector__wrapper">
+      @if (currentIcon()) {
+        <app-icon class="selector__current-icon" [name]="currentIcon()" />
+      }
       <span>{{ currentLabel() }}</span>
       <app-icon
         class="selector__chevron"
@@ -21,6 +24,9 @@
             (click)="selectOption(option); dropdown.close()"
             role="menuitem"
           >
+            @if (currentIcon()) {
+              <app-icon class="selector__current-icon" [name]="getIcon(option)" />
+            }
             <span class="selector__label">
               {{ getLabel(option) }}
             </span>
