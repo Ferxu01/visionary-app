@@ -18,9 +18,9 @@
 // @use 'components/button';
 
 @use 'components/model-3d.component';
-// @use 'components/instructions-panel.component';
 @use 'components/instruction-detail-modal.component';
 @use 'components/model-info-modal.component';
 @use 'components/switch-engine.component';
 
+@use 'components/selector.component';
 @use 'components/keyboard-indicator.component';

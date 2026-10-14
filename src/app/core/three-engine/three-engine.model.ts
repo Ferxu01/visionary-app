@@ -20,6 +20,10 @@ export type EyePart =
   | 'humoracuoso';
 
 export type ModelType = 'Sin Corte' | 'Sagital' | 'Frontal';
+export interface ModelTypeElement {
+  id: ModelType;
+  name: string;
+}
 
 type BaseRoute = 'assets/models/';
 type ModelRoute =

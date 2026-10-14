@@ -1,7 +1,7 @@
 import { Component, computed, inject, linkedSignal, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 import { DropdownComponent } from '../dropdown/dropdown.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { AVAILABLE_LANGUAGES, defaultLang, LangCode, Language } from './language.model';
 
 @Component({

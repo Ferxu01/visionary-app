@@ -11,7 +11,6 @@ export class IconComponent {
   name = input.required<string>();
 
   protected readonly iconFullName = computed(() => {
-    // assets/icons/fullscreen-exit.svg
     return `assets/icons/${this.name()}.svg`;
   });
 }

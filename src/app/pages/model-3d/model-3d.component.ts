@@ -7,33 +7,37 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { EngineService } from '../../core/three-engine/engine.service';
-import { SelectionService } from '../../core/three-engine/selection.service';
-import { InputManagerService } from '../../core/three-engine/input-manager.service';
-import { FocusPartCommand } from '../../core/three-engine/commands/focus-part-command';
-import { InstructionsPanelComponent } from '../../core/components/instructions-panel/instructions-panel.component';
-import { ModelInfoModalComponent } from '../../core/components/model-info-modal/model-info-modal.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { SwitchEngineComponent } from '../../core/components/switch-engine/switch-engine.component';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { MODEL_PATHS, ModelType } from '../../core/three-engine/three-engine.model';
+import { tap } from 'rxjs';
+import { InstructionDetailModalComponent } from '../../core/components/instruction-detail-modal/instruction-detail-modal.component';
+import { KeyboardIndicatorComponent } from '../../core/components/keyboard-indicator/keyboard-indicator.component';
+import { KeyboardIndicatorService } from '../../core/components/keyboard-indicator/keyboard-indicator.service';
+import { ModelInfoModalComponent } from '../../core/components/model-info-modal/model-info-modal.component';
+import { SelectorComponent } from '../../core/components/selector/selector.component';
+import { SwitchEngineComponent } from '../../core/components/switch-engine/switch-engine.component';
+import { FocusPartCommand } from '../../core/three-engine/commands/focus-part-command';
 import { ToggleMoveModeCommand } from '../../core/three-engine/commands/toggle-move-mode-command';
 import { DragManagerService } from '../../core/three-engine/drag-manager.service';
-import { DropdownComponent } from '../../core/components/dropdown/dropdown.component';
-import { KeyboardIndicatorService } from '../../core/components/keyboard-indicator/keyboard-indicator.service';
-import { KeyboardIndicatorComponent } from '../../core/components/keyboard-indicator/keyboard-indicator.component';
-import { tap } from 'rxjs';
+import { EngineService } from '../../core/three-engine/engine.service';
+import { InputManagerService } from '../../core/three-engine/input-manager.service';
+import { SelectionService } from '../../core/three-engine/selection.service';
+import {
+  MODEL_PATHS,
+  ModelType,
+  ModelTypeElement,
+} from '../../core/three-engine/three-engine.model';
 
 @Component({
   selector: 'app-3d-model',
   templateUrl: './model-3d.component.html',
   imports: [
     TranslocoPipe,
-    InstructionsPanelComponent,
     ModelInfoModalComponent,
     SwitchEngineComponent,
-    DropdownComponent,
     KeyboardIndicatorComponent,
+    InstructionDetailModalComponent,
+    SelectorComponent,
   ],
 })
 export class Model3dComponent implements AfterViewInit {
@@ -53,7 +57,11 @@ export class Model3dComponent implements AfterViewInit {
   // protected readonly motorWebGL = signal(false);
 
   protected readonly selectedOption = signal<ModelType>('Sin Corte');
-  protected readonly options = signal<ModelType[]>(['Sin Corte', 'Sagital', 'Frontal']);
+  protected readonly options: ModelTypeElement[] = [
+    { id: 'Sin Corte', name: 'Sin Corte' },
+    { id: 'Sagital', name: 'Sagital' },
+    { id: 'Frontal', name: 'Frontal' },
+  ];
 
   ngAfterViewInit(): void {
     this.engineService.init(this.canvasRef().nativeElement);

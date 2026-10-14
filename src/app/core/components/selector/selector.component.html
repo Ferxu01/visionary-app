@@ -1,0 +1,32 @@
+<app-dropdown #dropdown>
+  <ng-template #dropdownTrigger>
+    <div class="selector__wrapper">
+      <span>{{ currentLabel() }}</span>
+      <app-icon
+        class="selector__chevron"
+        [class.selector__chevron--rotated]="dropdown.isOpened()"
+        name="chevron"
+      />
+    </div>
+  </ng-template>
+
+  <ng-template #dropdownContent>
+    <ul class="selector__list" role="menu">
+      @for (option of options(); track getValue(option)) {
+        <li class="selector__item" role="none">
+          <button
+            type="button"
+            class="selector__option"
+            [class.selector__option--active]="isSelected(option)"
+            (click)="selectOption(option); dropdown.close()"
+            role="menuitem"
+          >
+            <span class="selector__label">
+              {{ getLabel(option) }}
+            </span>
+          </button>
+        </li>
+      }
+    </ul>
+  </ng-template>
+</app-dropdown>
