@@ -1,0 +1,134 @@
+@use '../abstracts' as *;
+
+.instruction-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px; // Más espacio exterior en pantallas grandes
+  animation: fadeIn 0.2s ease-out;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 5, 21, 0.75);
+    backdrop-filter: blur(8px);
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    // Ampliamos el ancho máximo para permitir una distribución más holgada
+    max-width: 1100px;
+    // Incrementamos la altura permitida para aprovechar el espacio vertical
+    max-height: 90vh;
+    background: #140f23;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 40px; // Padding más generoso
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__title {
+    font-size: 1.5rem; // Título ligeramente más prominente
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  &__close-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: rgba(147, 51, 234, 0.3);
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__content {
+    padding: 40px; // Más espacio interior en el área de tarjetas
+    overflow-y: auto;
+  }
+
+  &__grid {
+    // Columnas adaptativas más anchas para que la información respire
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px; // Mayor separación entre tarjetas
+  }
+}
+
+.instruction-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px; // Más padding interno en cada tarjeta
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+
+  &__icon-box {
+    width: 128px; // Caja de icono más grande y proporcionada
+    height: 128px;
+    border-radius: 16px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 12px;
+  }
+
+  &__icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  &__desc {
+    font-size: 0.95rem; // Tipografía ligeramente más legible
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
