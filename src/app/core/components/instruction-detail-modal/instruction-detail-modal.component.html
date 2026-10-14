@@ -1,0 +1,50 @@
+@if (isOpen()) {
+  <div class="instruction-modal" role="dialog" aria-modal="true">
+    <div
+      class="instruction-modal__backdrop"
+      tabindex="0"
+      (keydown)="close()"
+      (click)="close()"
+    ></div>
+
+    <div class="instruction-modal__container">
+      <header class="instruction-modal__header">
+        <h2 class="instruction-modal__title">{{ 'INSTRUCTIONS.MODAL_TITLE' | transloco }}</h2>
+        <!-- Botón de cerrar -->
+        <button
+          type="button"
+          class="instruction-modal__close-btn"
+          (click)="close()"
+          aria-label="Cerrar"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="instruction-modal__content">
+        <div class="instruction-modal__grid">
+          @for (item of instructions; track item.labelKey) {
+            <div class="instruction-card">
+              <div class="instruction-card__icon-box">
+                <img
+                  style="filter: invert(1)"
+                  class="instruction-card__icon"
+                  [src]="item.icon"
+                  [alt]="item.labelKey | transloco"
+                />
+              </div>
+              <div class="instruction-card__info">
+                <h3 class="instruction-card__title">{{ item.labelKey | transloco }}</h3>
+                <p class="instruction-card__desc">
+                  {{ item.descriptionKey ?? 'INSTRUCTIONS.DEFAULT_DESC' | transloco }}
+                </p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
