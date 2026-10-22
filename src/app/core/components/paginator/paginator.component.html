@@ -1,0 +1,114 @@
+<div class="paginator" [class.pointer-events-none]="isLoading()" [class.opacity-50]="isLoading()">
+  <div class="paginator__info">
+    Mostrando
+    <span class="paginator__info-highlight">{{ fromRecord() }}</span>
+    al
+    <span class="paginator__info-highlight">{{ toRecord() }}</span>
+    de
+    <span class="paginator__info-highlight">{{ length() }}</span> resultados
+  </div>
+
+  <div class="paginator__controls">
+    <div class="paginator__size-selector">
+      <span>Elementos por página:</span>
+      <select [value]="pageSize()" [disabled]="isLoading()" (change)="onPageSizeChange($event)">
+        @for (size of pageSizes; track size) {
+          <option [value]="size" [selected]="size === pageSize()">
+            {{ size }}
+          </option>
+        }
+      </select>
+    </div>
+
+    <div class="paginator__nav-buttons">
+      <!-- Primero -->
+      <button
+        type="button"
+        [disabled]="pageIndex() === 0 || isLoading()"
+        (click)="goToPage(0)"
+        class="paginator__btn"
+        title="Primera página"
+      >
+        <svg
+          class="groups__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+          />
+        </svg>
+      </button>
+
+      <!-- Anterior -->
+      <button
+        type="button"
+        [disabled]="pageIndex() === 0 || isLoading()"
+        (click)="goToPage(pageIndex() - 1)"
+        class="paginator__btn"
+        title="Página anterior"
+      >
+        <svg
+          class="groups__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+
+      <!-- Indicador de páginas actuales -->
+      <span class="paginator__page-indicator">
+        Página {{ pageIndex() + 1 }} de {{ totalPages() }}
+      </span>
+
+      <!-- Siguiente -->
+      <button
+        type="button"
+        [disabled]="pageIndex() >= totalPages() - 1 || isLoading()"
+        (click)="goToPage(pageIndex() + 1)"
+        class="paginator__btn"
+        title="Página siguiente"
+      >
+        <svg
+          class="groups__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+
+      <!-- Último -->
+      <button
+        type="button"
+        [disabled]="pageIndex() >= totalPages() - 1 || isLoading()"
+        (click)="goToPage(totalPages() - 1)"
+        class="paginator__btn"
+        title="Última página"
+      >
+        <svg
+          class="groups__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
