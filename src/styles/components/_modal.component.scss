@@ -1,0 +1,138 @@
+@use '../abstracts' as *;
+
+.modal {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  border: none;
+
+  &[open] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__card {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 30rem;
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.2s ease-in-out;
+
+    .modal[open] & {
+      transform: scale(1);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    gap: 1rem;
+  }
+
+  &__header-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    flex-shrink: 0;
+
+    // Modificador de peligro (Rojo)
+    &--danger {
+      background-color: #fee2e2; // Rojo muy suave / claro para el fondo
+
+      .modal__warning-icon {
+        color: #ef4444; // Rojo intenso para el icono de exclamación
+      }
+    }
+  }
+
+  &__warning-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  &__close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 0.25rem;
+    border-radius: 0.375rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+
+    &:hover {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+  }
+
+  &__body {
+    padding: 1.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+    line-height: 1.5;
+    padding-left: 4.75rem; // Alineación correcta respecto al icono de la cabecera
+
+    @include respond-to('md') {
+      padding-left: 1.5rem;
+    }
+    // @media (max-width: 640px) {
+    //   padding-left: 1.5rem;
+    // }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+}
