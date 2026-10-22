@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { IconComponent } from '../../core/components/icon/icon.component';
-import { UserService } from '../../core/services/user.service';
+import { UserService } from '../../core/services/users.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({

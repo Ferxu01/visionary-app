@@ -5,7 +5,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { PaginatorComponent } from '../../core/components/paginator/paginator.component';
 import { PageEvent, PageSize } from '../../core/components/paginator/paginator.model';
 import { Group, GroupsService } from '../../core/services/groups.service';
-import { UserService } from '../../core/services/user.service';
+import { UserService } from '../../core/services/users.service';
 
 @Component({
   selector: 'app-groups',
