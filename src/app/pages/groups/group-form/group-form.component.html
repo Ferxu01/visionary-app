@@ -1,0 +1,60 @@
+<div class="group-form-container">
+  <form class="group-form" [formGroup]="groupForm" (submit)="handleForm()">
+    <!-- $event.preventDefault() -->
+    <header class="group-form__header">
+      <h3 class="group-form__title">
+        @if (isEditing()) {
+          {{ 'Editar grupo' | transloco }}
+        } @else {
+          {{ 'Nuevo grupo' | transloco }}
+        }
+      </h3>
+    </header>
+
+    <div class="group-form__body">
+      <div class="groups-field">
+        <label class="groups-field__label" for="grupoInput">
+          {{ 'name' | transloco }}
+        </label>
+        <input type="text" formControlName="nombre" class="groups-field__input" />
+        @if (groupForm.get('nombre')?.touched && groupForm.get('nombre')?.hasError('required')) {
+          <span class="groups-field__error">
+            {{ 'error.name.required' | transloco }}
+          </span>
+        }
+      </div>
+
+      <div class="groups-field">
+        <label class="groups-field__label" for="asignaturaInput">
+          {{ 'subject' | transloco }}
+        </label>
+        <input
+          id="asignaturaInput"
+          type="text"
+          formControlName="asignatura"
+          class="groups-field__input"
+        />
+        @if (
+          groupForm.get('asignatura')?.touched && groupForm.get('asignatura')?.hasError('required')
+        ) {
+          <span class="groups-field__error">
+            {{ 'error.subject.required' | transloco }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <footer class="group-form__footer">
+      <button type="button" class="groups__btn groups__btn--secondary" (click)="cancel()">
+        {{ 'Cancelar' | transloco }}
+      </button>
+      <button type="submit" class="groups__btn groups__btn--primary">
+        @if (isEditing()) {
+          {{ 'Editar' | transloco }}
+        } @else {
+          {{ 'Añadir' | transloco }}
+        }
+      </button>
+    </footer>
+  </form>
+</div>
