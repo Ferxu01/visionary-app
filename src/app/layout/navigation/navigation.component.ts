@@ -38,7 +38,7 @@ export class NavigationComponent {
       id: 'grupos',
       title: 'Grupos',
       icon: 'user-group',
-      link: '/grupos',
+      link: '/groups',
     },
     {
       id: 'tests',

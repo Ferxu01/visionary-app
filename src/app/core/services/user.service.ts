@@ -1,11 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 
-interface User {
+export interface User {
   id: string;
   nombre: string;
   correo: string;
   foto?: string;
-  rol: 'admin' | 'user';
+  rol: 'admin' | 'user' | 'Alumno';
 }
 
 @Injectable({ providedIn: 'root' })

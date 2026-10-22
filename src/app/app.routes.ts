@@ -16,6 +16,10 @@ export const routes: Routes = [
         path: 'model3d',
         component: Model3dComponent,
       },
+      {
+        path: 'groups',
+        loadChildren: () => import('./pages/groups/groups.routes').then((m) => m.routes),
+      },
     ],
   },
   { path: '**', redirectTo: 'model3d', pathMatch: 'full' },

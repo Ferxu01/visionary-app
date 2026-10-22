@@ -13,6 +13,7 @@
 // 4. Components (Microcomponentes reutilizables)
 @use 'components/icon.component';
 @use 'components/dropdown.component';
+@use 'components/paginator.component';
 
 @use 'components/model-3d.component';
 @use 'components/instruction-detail-modal.component';
@@ -21,3 +22,6 @@
 
 @use 'components/selector.component';
 @use 'components/keyboard-indicator.component';
+
+// 4. Pages
+@use 'pages/groups.scss';
