@@ -1,0 +1,158 @@
+<div class="group-details">
+  <!-- Cabecera de Detalles -->
+  <div class="group-details__header">
+    <div class="group-details__header-content">
+      <div class="flex">
+        <a routerLink="/groups" class="groups__back-link">
+          <svg
+            class="groups__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          <span>{{ 'Atrás' | transloco }}</span>
+        </a>
+      </div>
+
+      @if (groupData(); as groupData) {
+        <div class="group-details__header-content">
+          <h1 class="group-details__title">
+            {{ 'Listado de alumnos' | transloco }}
+          </h1>
+
+          <div class="group-details__subtitle-wrapper">
+            <span class="group-details__group-name">
+              {{ groupData.nombre }}
+            </span>
+
+            <span class="group-details__separator">•</span>
+
+            <span class="group-details__subject-label">
+              {{ 'Asignatura:' | transloco }}
+              <span class="group-details__subject-name">
+                {{ groupData.asignatura }}
+              </span>
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Acciones derechas (Buscador y botón añadir) -->
+    <div class="group-details__actions">
+      <div class="groups__search">
+        <svg
+          class="groups__search-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <input
+          type="text"
+          [placeholder]="'Buscar...' | transloco"
+          class="groups__search-input"
+          autocomplete="off"
+        />
+      </div>
+
+      <a routerLink="assign" class="groups__btn groups__btn--primary">
+        <svg
+          class="groups__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.765z"
+          />
+        </svg>
+        <span>{{ 'Asignar alumno' | transloco }}</span>
+      </a>
+    </div>
+  </div>
+
+  <main class="groups__main">
+    <div class="groups__table-wrapper">
+      <table class="groups__table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>{{ 'Nombre' | transloco }}</th>
+            <th>{{ 'Apellidos' | transloco }}</th>
+            <th>{{ 'Correo' | transloco }}</th>
+            <th>{{ 'Acciones' | transloco }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (student of studentsData(); track student.id) {
+            <tr class="groups__row">
+              <td>
+                <div class="group-details__student-avatar">
+                  @if (student.foto; as foto) {
+                    <img [src]="foto" [alt]="student.nombre" />
+                  } @else {
+                    <div class="group-details__student-avatar-fallback">
+                      {{ 'Sin foto' | transloco }}
+                    </div>
+                  }
+                </div>
+              </td>
+              <td>{{ student.nombre }}</td>
+              <td>{{ student.apellidos }}</td>
+              <td>{{ student.correo }}</td>
+
+              <td class="groups__actions-cell">
+                <!-- Botón desasignar -->
+                <button
+                  type="button"
+                  class="groups__btn-action groups__btn-action--danger"
+                  [title]="'Desasignar alumno' | transloco"
+                  (click)="confirmationModal.open()"
+                >
+                  <svg
+                    class="groups__icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+
+            <app-modal
+              #confirmationModal
+              headerTitle="Desasignar alumno"
+              message="¿Estás seguro de que quieres desasignar a este alumno del grupo? <span><b>¡Esta acción no se puede deshacer!</b></span>"
+              (confirmed)="unassignStudent(student.id)"
+              (cancelled)="(null)"
+            />
+          } @empty {
+            <div class="groups__empty">
+              {{ 'notAvailableStudents' | transloco }}
+            </div>
+          }
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
