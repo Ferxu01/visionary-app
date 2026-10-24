@@ -34,19 +34,6 @@
     display: flex;
   }
 
-  &__back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-weight: 500;
-    color: var(--text-secondary, #4b5563);
-    text-decoration: none;
-
-    &:hover {
-      color: var(--text-primary, #111827);
-    }
-  }
-
   &__actions {
     display: flex;
     align-items: center;

@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { LinkComponent } from '../../core/components/link/link.component';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { PaginatorComponent } from '../../core/components/paginator/paginator.component';
 import { PageEvent, PageSize } from '../../core/components/paginator/paginator.model';
@@ -11,7 +12,14 @@ import { UserService } from '../../core/services/users.service';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
-  imports: [RouterLink, TranslocoPipe, PaginatorComponent, ModalComponent, SearchbarComponent],
+  imports: [
+    RouterLink,
+    TranslocoPipe,
+    PaginatorComponent,
+    ModalComponent,
+    SearchbarComponent,
+    LinkComponent,
+  ],
 })
 export class GroupsComponent {
   private readonly userService = inject(UserService);

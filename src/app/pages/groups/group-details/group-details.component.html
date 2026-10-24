@@ -2,22 +2,15 @@
   <!-- Cabecera de Detalles -->
   <div class="group-details__header">
     <div class="group-details__header-content">
-      <div class="flex">
-        <a routerLink="/groups" class="groups__back-link">
-          <svg
-            class="groups__icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-          <span>{{ 'Atrás' | transloco }}</span>
-        </a>
-      </div>
+      @if (isLoading()) {
+        <div class="groups__loader"></div>
+      }
 
-      @if (groupData(); as groupData) {
+      <nav class="groups__breadcrumb">
+        <app-link link="/groups" [title]="'Atrás' | transloco" />
+      </nav>
+
+      @if (groupData(); as group) {
         <div class="group-details__header-content">
           <h1 class="group-details__title">
             {{ 'Listado de alumnos' | transloco }}
@@ -25,7 +18,7 @@
 
           <div class="group-details__subtitle-wrapper">
             <span class="group-details__group-name">
-              {{ groupData.nombre }}
+              {{ group.nombre }}
             </span>
 
             <span class="group-details__separator">•</span>
@@ -33,7 +26,7 @@
             <span class="group-details__subject-label">
               {{ 'Asignatura:' | transloco }}
               <span class="group-details__subject-name">
-                {{ groupData.asignatura }}
+                {{ group.asignatura }}
               </span>
             </span>
           </div>

@@ -1,7 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { LinkComponent } from '../../../../core/components/link/link.component';
 import { SearchbarComponent } from '../../../../core/components/searchbar/searchbar.component';
 import { GroupsService } from '../../../../core/services/groups.service';
 import { User } from '../../../../core/services/users.service';
@@ -9,7 +10,7 @@ import { User } from '../../../../core/services/users.service';
 @Component({
   selector: 'app-assignable-students',
   templateUrl: './assignable-students.component.html',
-  imports: [RouterLink, TranslocoPipe, SearchbarComponent],
+  imports: [TranslocoPipe, SearchbarComponent, LinkComponent],
 })
 export class AssignableStudentsComponent {
   private readonly route = inject(ActivatedRoute);

@@ -1,0 +1,8 @@
+<a class="link" [routerLink]="link()">
+  @if (icon(); as icon) {
+    <app-icon [name]="icon" />
+  }
+  @if (title(); as title) {
+    <span class="link__text">{{ title }}</span>
+  }
+</a>

@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { LinkComponent } from '../../../core/components/link/link.component';
 import { ModalComponent } from '../../../core/components/modal/modal.component';
 import { SearchbarComponent } from '../../../core/components/searchbar/searchbar.component';
 import { GroupsService } from '../../../core/services/groups.service';
@@ -10,7 +11,7 @@ import { User } from '../../../core/services/users.service';
 @Component({
   selector: 'app-group-details',
   templateUrl: './group-details.component.html',
-  imports: [RouterLink, TranslocoPipe, ModalComponent, SearchbarComponent],
+  imports: [RouterLink, TranslocoPipe, ModalComponent, SearchbarComponent, LinkComponent],
 })
 export class GroupDetailsComponent {
   private readonly route = inject(ActivatedRoute);
