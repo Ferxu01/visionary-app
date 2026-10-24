@@ -1,0 +1,97 @@
+.searchbar {
+  position: relative;
+  width: 100%;
+  min-width: 16rem; /* Equivalente a min-w-64 */
+  max-width: 28rem; /* Equivalente a max-w-md */
+
+  &__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #9ca3af;
+  }
+
+  &__icon-wrapper {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    padding: 0 0.5rem;
+    pointer-events: none;
+    color: #a1a1aa; /* zinc-400 */
+    transition: color 0.2s ease-in-out;
+
+    // TODO: REVISAR (no mentenible)
+    @media (prefers-color-scheme: dark) {
+      color: #71717a; /* zinc-500 */
+    }
+
+    /* Si usas una clase global o atributo para modo oscuro de Tailwind (.dark) */
+    :host-context(.dark) & {
+      color: #71717a;
+    }
+  }
+
+  &:focus-within &__icon-wrapper {
+    color: #6366f1; /* indigo-500 */
+  }
+
+  &__input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    background-color: #ffffff;
+    border: 1px solid #e4e4e7; /* zinc-200 */
+    border-radius: 0.5rem;
+    color: #18181b; /* zinc-900 */
+    transition: all 0.2s ease-in-out;
+
+    &::placeholder {
+      color: #a1a1aa; /* zinc-400 */
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #6366f1; /* indigo-500 */
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* ring-indigo-500/20 */
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      background-color: #fafafa; /* zinc-50 */
+      pointer-events: none;
+    }
+
+    // TODO: REVISAR (no mentenible)
+    /* Modo oscuro (soporte por media query del sistema o clase .dark en el host/ancestro) */
+    @media (prefers-color-scheme: dark) {
+      background-color: rgba(24, 24, 27, 0.5); /* zinc-900/50 */
+      border-color: #27272a; /* zinc-800 */
+      color: #f4f4f5; /* zinc-100 */
+
+      &::placeholder {
+        color: #71717a; /* zinc-500 */
+      }
+
+      &:disabled {
+        background-color: #18181b; /* zinc-900 */
+      }
+    }
+
+    // TODO: REVISAR (no mentenible???)
+    :host-context(.dark) & {
+      background-color: rgba(24, 24, 27, 0.5);
+      border-color: #27272a;
+      color: #f4f4f5;
+
+      &::placeholder {
+        color: #71717a;
+      }
+
+      &:disabled {
+        background-color: #18181b;
+      }
+    }
+  }
+}

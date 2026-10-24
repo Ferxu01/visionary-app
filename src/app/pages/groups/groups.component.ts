@@ -1,20 +1,19 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { PaginatorComponent } from '../../core/components/paginator/paginator.component';
 import { PageEvent, PageSize } from '../../core/components/paginator/paginator.model';
+import { SearchbarComponent } from '../../core/components/searchbar/searchbar.component';
 import { Group, GroupsService } from '../../core/services/groups.service';
 import { UserService } from '../../core/services/users.service';
 
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
-  imports: [RouterLink, ReactiveFormsModule, TranslocoPipe, PaginatorComponent, ModalComponent],
+  imports: [RouterLink, TranslocoPipe, PaginatorComponent, ModalComponent, SearchbarComponent],
 })
 export class GroupsComponent {
-  private readonly router = inject(Router);
   private readonly userService = inject(UserService);
   private readonly groupsService = inject(GroupsService);
 
@@ -25,9 +24,6 @@ export class GroupsComponent {
   protected readonly pageIndex = signal(0);
   protected readonly pageSize = signal<PageSize>(10);
   protected readonly totalGroupsLength = signal(0);
-
-  // Control de formulario y búsqueda
-  protected readonly searchControl = new FormControl('', { nonNullable: true });
 
   protected onPageChange(event: PageEvent): void {
     this.pageIndex.set(event.pageIndex);

@@ -1,0 +1,15 @@
+<div class="searchbar">
+  <div class="searchbar__icon-wrapper">
+    <app-icon class="searchbar__icon" name="magnifier-glass" />
+  </div>
+
+  <input
+    class="searchbar__input"
+    type="text"
+    [value]="searchQuery()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    autocomplete="off"
+    (input)="onInput($event)"
+  />
+</div>
