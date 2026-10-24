@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { ModalComponent } from '../../core/components/modal/modal.component';
 import { PaginatorComponent } from '../../core/components/paginator/paginator.component';
 import { PageEvent, PageSize } from '../../core/components/paginator/paginator.model';
 import { Group, GroupsService } from '../../core/services/groups.service';
@@ -10,7 +11,7 @@ import { UserService } from '../../core/services/users.service';
 @Component({
   selector: 'app-groups',
   templateUrl: './groups.component.html',
-  imports: [RouterLink, ReactiveFormsModule, TranslocoPipe, PaginatorComponent],
+  imports: [RouterLink, ReactiveFormsModule, TranslocoPipe, PaginatorComponent, ModalComponent],
 })
 export class GroupsComponent {
   private readonly router = inject(Router);

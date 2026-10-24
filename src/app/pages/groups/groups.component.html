@@ -155,7 +155,7 @@
                     type="button"
                     class="groups__btn-action groups__btn-action--danger"
                     [title]="'Eliminar grupo' | transloco"
-                    (click)="deleteGroup(group.id)"
+                    (click)="confirmationModal.open()"
                   >
                     <svg
                       class="groups__icon"
@@ -171,6 +171,14 @@
                       />
                     </svg>
                   </button>
+
+                  <app-modal
+                    #confirmationModal
+                    headerTitle="Eliminar grupo"
+                    message="¿Estás seguro de que quieres borrar este grupo permanentemente? <span><b>¡Esta acción no se puede deshacer!</b></span>"
+                    (confirmed)="deleteGroup(group.id)"
+                    (cancelled)="(null)"
+                  />
                 </td>
               }
             </tr>
