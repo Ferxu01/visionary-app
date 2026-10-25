@@ -39,68 +39,60 @@
     </div>
   </div>
 
-  <!-- Contenido de la Tabla Nativa de Alumnos No Asignados -->
   <main class="groups__main">
-    <div class="groups__table-wrapper">
-      <table class="groups__table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>{{ 'Nombre' | transloco }}</th>
-            <th>{{ 'Apellidos' | transloco }}</th>
-            <th>{{ 'Correo' | transloco }}</th>
-            <th>{{ 'Acciones' | transloco }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (student of studentsData(); track student.id) {
-            <tr class="groups__row">
-              <td>
-                <div class="group-details__student-avatar">
-                  @if (student.foto; as foto) {
-                    <img [src]="foto" [alt]="student.nombre" />
-                  } @else {
-                    <div class="group-details__student-avatar-fallback">
-                      {{ 'Sin foto' | transloco }}
-                    </div>
-                  }
-                </div>
-              </td>
-              <td>{{ student.nombre }}</td>
-              <td>{{ student.apellidos }}</td>
-              <td>{{ student.correo }}</td>
+    <app-table [data]="mockUsersToAssign">
+      <ng-template #headerTemplate>
+        <th></th>
+        <th>{{ 'Nombre' | transloco }}</th>
+        <th>{{ 'Apellidos' | transloco }}</th>
+        <th>{{ 'Correo' | transloco }}</th>
+        <th>{{ 'Acciones' | transloco }}</th>
+      </ng-template>
 
-              <td class="groups__actions-cell">
-                <!-- Botón asignar alumno -->
-                <button
-                  type="button"
-                  class="groups__btn-action groups__btn-action--edit"
-                  [title]="'Asignar alumno' | transloco"
-                  (click)="assignStudent(student.id)"
-                >
-                  <svg
-                    class="groups__icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          } @empty {
-            <div class="groups__empty">
-              {{ 'notAvailableStudents' | transloco }}
+      <ng-template #rowCellTemplate let-student>
+        <div class="group-details__student-avatar">
+          @if (student.foto; as foto) {
+            <img [src]="foto" [alt]="student.nombre" />
+          } @else {
+            <div class="group-details__student-avatar-fallback">
+              {{ 'Sin foto' | transloco }}
             </div>
           }
-        </tbody>
-      </table>
-    </div>
+        </div>
+      </ng-template>
+
+      <ng-template #rowCellTemplate let-student>
+        {{ student.nombre }}
+      </ng-template>
+
+      <ng-template #rowCellTemplate let-student>
+        {{ student.apellidos }}
+      </ng-template>
+
+      <ng-template #rowCellTemplate let-student>
+        {{ student.correo }}
+      </ng-template>
+
+      <ng-template #rowCellTemplate let-student>
+        <div class="table__actions-cell">
+          <button
+            type="button"
+            class="table__btn-action table__btn-action--edit"
+            [title]="'Asignar alumno' | transloco"
+            (click)="assignStudent(student.id)"
+          >
+            <svg
+              class="groups__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+        </div>
+      </ng-template>
+    </app-table>
   </main>
 </div>

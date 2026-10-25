@@ -1,0 +1,38 @@
+<div class="table__wrapper">
+  <table class="table">
+    <thead>
+      <tr>
+        <ng-container *ngTemplateOutlet="headerTemplate()"></ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of items(); track trackById($index, item)) {
+        <tr class="table__row">
+          @for (cellTemplate of rowCellTemplates(); track $index) {
+            <td>
+              <ng-container
+                *ngTemplateOutlet="cellTemplate; context: { $implicit: item }"
+              ></ng-container>
+            </td>
+          }
+        </tr>
+      } @empty {
+        <div class="table__empty">
+          {{ 'No hay registros disponibles para mostrar' | transloco }}
+        </div>
+      }
+    </tbody>
+  </table>
+
+  @if (showPaginator()) {
+    <app-paginator
+      [length]="total()"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [isLoading]="isLoading()"
+      (pageChanged)="onPageChange($event)"
+    />
+  }
+</div>
+
+<!-- ; else noGrupos -->
