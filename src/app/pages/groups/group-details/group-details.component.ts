@@ -25,47 +25,6 @@ export class GroupDetailsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly groupsService = inject(GroupsService);
 
-  protected readonly mockUsersInGroup: {
-    page: {
-      desde: number;
-      registropp: number;
-      total: number;
-    };
-    items: User[];
-  } = {
-    page: {
-      desde: 0,
-      registropp: 10,
-      total: 30,
-    },
-    items: [
-      {
-        id: '2',
-        nombre: 'David',
-        apellidos: 'García Pérez',
-        correo: 'david.garcia@medvision.com',
-        foto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
-        rol: 'Alumno',
-      },
-      {
-        id: '3',
-        nombre: 'Sofía',
-        apellidos: 'Rodríguez Gómez',
-        correo: 'sofia.rodriguez@medvision.com',
-        foto: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
-        rol: 'Alumno',
-      },
-      {
-        id: '4',
-        nombre: 'Alejandro',
-        apellidos: 'Fernández Ruiz',
-        correo: 'alejandro.fernandez@medvision.com',
-        foto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150',
-        rol: 'Alumno',
-      },
-    ],
-  };
-
   private readonly routeParams = toSignal(this.route.paramMap);
   protected readonly groupId = computed(() => {
     const routeParams = this.routeParams();
@@ -83,7 +42,7 @@ export class GroupDetailsComponent {
 
   protected readonly studentsData = computed(() => {
     const groupId = this.groupId();
-    if (!groupId) return [];
+    if (!groupId) return null;
     return this.groupsService.getAssignedStudents(groupId);
   });
 

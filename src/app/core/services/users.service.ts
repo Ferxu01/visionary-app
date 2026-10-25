@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { ApiResponse, mapApiData } from '../models/http.model';
 
 export interface User {
   id: string;
@@ -55,7 +56,11 @@ export class UserService {
   ]);
 
   readonly currentUser = signal<User>(this._users()[0]);
-  readonly users = this._users.asReadonly();
+  private readonly users = this._users.asReadonly();
+
+  getUsers(): ApiResponse<User> {
+    return mapApiData(this.users());
+  }
 
   getUser(id: User['id']): User | null {
     const user = this._users().find((u) => u.id === id);

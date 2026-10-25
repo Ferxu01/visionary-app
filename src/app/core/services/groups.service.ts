@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { ApiResponse, DEFAULT_PAGINATION, getDataItems, mapApiData } from '../models/http.model';
 import { User, UserService } from './users.service';
 
 type Student = User;
@@ -35,7 +36,11 @@ export class GroupsService {
     },
   ]);
 
-  readonly groups = this._groups.asReadonly();
+  private readonly groups = this._groups.asReadonly();
+
+  getGroups(): ApiResponse<Group> {
+    return mapApiData(this.groups());
+  }
 
   getGroup(id: Group['id']): Group | null {
     const group = this._groups().find((g) => g.id === id);
@@ -60,24 +65,33 @@ export class GroupsService {
     return true;
   }
 
-  getNotAssignedStudents(groupId: Group['id']): User[] {
+  getNotAssignedStudents(groupId: Group['id']): ApiResponse<User> {
     const group = this.getGroup(groupId);
-    if (!group) return [];
+    if (!group)
+      return {
+        items: [],
+        page: DEFAULT_PAGINATION,
+      };
 
-    const notAssignedStudents = this.usersService
-      .users()
-      .filter((user) => !group.alumnos.includes(user.id));
-    return notAssignedStudents;
+    const notAssignedStudents = getDataItems(this.usersService.getUsers()).filter(
+      (user) => !group.alumnos.includes(user.id),
+    );
+    return mapApiData(notAssignedStudents);
   }
 
-  getAssignedStudents(groupId: Group['id']): User[] {
+  getAssignedStudents(groupId: Group['id']): ApiResponse<User> {
     const group = this.getGroup(groupId);
-    if (!group || !group.alumnos) return [];
+    if (!group || !group.alumnos) {
+      return {
+        items: [],
+        page: DEFAULT_PAGINATION,
+      };
+    }
 
-    const assignedStudents = this.usersService
-      .users()
-      .filter((alumno) => group.alumnos.includes(alumno.id));
-    return assignedStudents;
+    const assignedStudents = getDataItems(this.usersService.getUsers()).filter((alumno) =>
+      group.alumnos.includes(alumno.id),
+    );
+    return mapApiData(assignedStudents);
   }
 
   assignStudent(groupId: Group['id'], studentId: User['id']): void {

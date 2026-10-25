@@ -46,7 +46,7 @@
 
   <!-- Main Content -->
   <main class="groups__main">
-    <app-table [data]="mockTestGroupsData">
+    <app-table [data]="groups()">
       <ng-template #headerTemplate>
         <th>{{ 'Nombre' | transloco }}</th>
         <th>{{ 'Asignatura' | transloco }}</th>

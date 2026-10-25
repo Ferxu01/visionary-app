@@ -9,21 +9,12 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { Pagination } from '../../models/http.model';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { PageEvent, PageSize } from '../paginator/paginator.model';
 
-interface Pagination {
-  desde: number; // Offset de inicio
-  registropp: number; // Registros por página
-  total: number; // Total en la búsqueda
-}
-
-// interface PagedData<T> {
-//   page: Pagination | null;
-//   [key: string]: T[] | Pagination | null;
-// }
 interface PagedData<T> {
-  page: Pagination | null;
+  page: Pagination;
   items: T[] | null;
 }
 
@@ -36,9 +27,6 @@ export class TableComponent<T = unknown> {
   data = input.required<PagedData<T> | null>();
   isLoading = input(false);
 
-  // showActions = input(true);
-  // actionIcon = input('heroicons_outline:user-minus');
-  // actionClicked = output<T>();
   pageChanged = output<unknown>();
 
   headerTemplate = contentChild.required<TemplateRef<unknown>>('headerTemplate');
@@ -68,14 +56,7 @@ export class TableComponent<T = unknown> {
     if (!data) return false;
 
     return !!data.page;
-
-    // return !!data && !!data.page && this.items().length;
   });
-
-  // protected onActionClick(item: T, event: Event): void {
-  //   event.stopPropagation();
-  //   this.actionClicked.emit(item);
-  // }
 
   protected onPageChange(event: PageEvent): void {
     this.pageChanged.emit(event);
