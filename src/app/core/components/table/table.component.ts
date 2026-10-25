@@ -25,7 +25,6 @@ interface PagedData<T> {
 })
 export class TableComponent<T = unknown> {
   data = input.required<PagedData<T> | null>();
-  isLoading = input(false);
 
   pageChanged = output<unknown>();
 
